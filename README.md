@@ -1,54 +1,176 @@
-# Global-Ready Planning Pack
+# Global-Ready
 
-Status: Draft v0.1  
-Last updated: 2026-08-16
+Global-Ready is a zero-cost, local-first portfolio project for practising English software-engineering interviews while rebuilding modern Java/Spring skills.
 
-Global-Ready is an English interview-practice product for software developers. This pack is the source material for product brainstorming, milestone generation, and implementation planning.
+Current source status: **M1 scaffold**. Canonical specification: **v0.2 — ready for implementation**. Interview domain behaviour begins in M2 and is intentionally not generated in this checkpoint.
 
-## Recommended reading order
+## MVP in one sentence
 
-1. [`docs/01_PRODUCT_BRIEF.md`](docs/01_PRODUCT_BRIEF.md)
-2. [`docs/02_ASSUMPTIONS_AND_DECISIONS.md`](docs/02_ASSUMPTIONS_AND_DECISIONS.md)
-3. [`docs/03_SRS.md`](docs/03_SRS.md)
-4. [`docs/04_ARCHITECTURE.md`](docs/04_ARCHITECTURE.md)
-5. [`docs/05_DATA_AND_API.md`](docs/05_DATA_AND_API.md)
-6. [`docs/06_OPEN_QUESTIONS.md`](docs/06_OPEN_QUESTIONS.md)
-7. [`docs/07_MILESTONE_RULES.md`](docs/07_MILESTONE_RULES.md)
-8. [`CLAUDE_MILESTONE_PROMPT.md`](CLAUDE_MILESTONE_PROMPT.md)
+One anonymous desktop-Chrome user pastes project context, completes up to six English project deep-dive turns through browser speech recognition or text, and receives evidence-grounded Vietnamese feedback; the app stores no audio and expires session data after 24 hours.
 
-## Source-of-truth hierarchy
+## Stack pinned on 2026-08-24
 
-When documents conflict, use this order:
+| Component | Version |
+|---|---|
+| Java | 25; Docker image Temurin 25.0.4+7 |
+| Spring Boot | 4.1.1 |
+| Gradle Wrapper | 9.3.0 |
+| Springdoc OpenAPI | 3.0.3 |
+| PostgreSQL | 18.6 |
+| Node.js | 24.19.0 |
+| Next.js | 16.3.2 |
+| React | 19.2.8 |
+| TypeScript | 5.9.3 |
 
-1. Approved decisions in `02_ASSUMPTIONS_AND_DECISIONS.md`
-2. Product scope and requirements in `03_SRS.md`
-3. Architecture constraints in `04_ARCHITECTURE.md`
-4. Draft data/API contracts in `05_DATA_AND_API.md`
-5. Suggestions produced by an AI assistant
+Spring Boot 4.1.1 officially supports Java 17 through 26. Next.js requires Node.js 20.9 or later; this repository pins Node 24 for reproducibility.
 
-An AI assistant must not silently change an approved requirement. It should list proposed changes under `SPEC DELTAS` for human approval.
-
-## Intended workflow
-
-1. Resolve the P0 questions in `06_OPEN_QUESTIONS.md`.
-2. Update the decisions and SRS.
-3. Give the pack and `CLAUDE_MILESTONE_PROMPT.md` to Claude.
-4. Review Claude's assumptions and spec deltas before accepting milestones.
-5. Implement one vertical slice at a time.
-6. Keep backend core logic human-written first; use AI primarily for review, tests, infrastructure, and boilerplate.
-
-## Current repository direction
-
-The MVP should use one monorepo with independently buildable applications:
+## Repository
 
 ```text
 global-ready/
-├── backend/          # Java 25 + Spring Boot
-├── frontend/         # Next.js + TypeScript
-├── docs/
+├── backend/          Spring MVC, JPA, Flyway, Actuator, OpenAPI
+├── frontend/         Next.js App Router and TypeScript
+├── docs/             Canonical v0.2 specification and ADRs
 ├── compose.yaml
-├── .env.example
-└── README.md
+└── .env.example
 ```
 
-Monorepo does not imply a shared deployment. Frontend and backend can be deployed independently.
+## Required local tools
+
+- JDK 25;
+- Node.js 24.19.0 (the frontend includes `.nvmrc`);
+- Docker Desktop or Colima with Docker CLI and Compose.
+
+No Gemini key is needed for M1 or the future default fake-provider path.
+
+If Docker runs through Colima, configure Testcontainers before running the
+backend tests:
+
+```bash
+export DOCKER_HOST=unix:///Users/your-user/.colima/default/docker.sock
+export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+```
+
+## Run locally
+
+Copy local configuration:
+
+```bash
+cp .env.example .env
+```
+
+Start PostgreSQL:
+
+```bash
+docker compose up -d postgres
+```
+
+Start the backend:
+
+```bash
+cd backend
+./gradlew bootRun
+```
+
+Start the frontend in a second terminal:
+
+```bash
+cd frontend
+nvm use
+npm ci
+npm run dev
+```
+
+Open:
+
+- frontend: <http://localhost:3000>
+- health: <http://localhost:8080/actuator/health>
+- OpenAPI JSON: <http://localhost:8080/api-docs>
+- Swagger UI: <http://localhost:8080/swagger-ui>
+
+To build all application containers:
+
+```bash
+docker compose --profile app up --build
+```
+
+## Verify
+
+Backend, including Testcontainers PostgreSQL:
+
+```bash
+cd backend
+./gradlew test
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm run check
+```
+
+Compose:
+
+```bash
+docker compose config
+docker compose --profile app config
+```
+
+## M1 boundaries
+
+Included:
+
+- reproducible backend/frontend scaffolds;
+- pinned dependencies and container images;
+- PostgreSQL/Flyway/Testcontainers wiring;
+- health and OpenAPI endpoints;
+- virtual threads;
+- injected UTC `Clock`;
+- ECS JSON logging with correlation IDs;
+- safe environment configuration;
+- frontend landing/checkpoint page;
+- independent CI jobs.
+
+Not implemented yet:
+
+- anonymous access and session token;
+- session/turn/report entities;
+- migrations for domain tables;
+- fake or Gemini gateways;
+- speech recognition and synthesis UI;
+- interview/report flow.
+
+Those begin at M2/M3 according to [the milestone plan](docs/08_MILESTONE_PLAN.md).
+
+## Documentation
+
+Start with:
+
+1. [approved decisions](docs/02_ASSUMPTIONS_AND_DECISIONS.md);
+2. [SRS](docs/03_SRS.md);
+3. [architecture](docs/04_ARCHITECTURE.md);
+4. [data/API contract](docs/05_DATA_AND_API.md);
+5. [milestone plan](docs/08_MILESTONE_PLAN.md);
+6. [readiness gate](docs/10_CHANGELOG_AND_READINESS.md).
+7. [M1 implementation handoff](docs/11_M1_IMPLEMENTATION_HANDOFF.md).
+
+The old `CLAUDE_MILESTONE_PROMPT.md` is retained only as planning history.
+
+## Privacy and zero-cost rules
+
+- Never persist raw audio.
+- Never log raw CV, JD, answers, report, provider prompts, tokens, or provider payloads.
+- Keep the complete fake-provider path runnable without API keys.
+- Use only synthetic/anonymised data for a public demo until current provider/hosting terms are reviewed.
+- Public hosting is optional; local Docker is the acceptance environment.
+
+## Dependency note
+
+Next.js announced another security release for 2026-08-26. This scaffold pins the current registry release available on 2026-08-24. Run `npm audit` and upgrade to the patched supported release before any public deployment. ESLint 9 is retained because the current Next.js lint plugin chain does not yet accept ESLint 10 without invalid peer dependencies.
+
+PostgreSQL 18 uses a version-specific `PGDATA` and its Docker volume is intentionally mounted at `/var/lib/postgresql`, not the pre-18 `/var/lib/postgresql/data` path.
+
+## CV rule
+
+Do not replace the capstone entry yet. Global-Ready becomes CV-ready only after M7 tests, demo evidence, limitations, and an owner-led code defence are complete.
