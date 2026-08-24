@@ -58,6 +58,8 @@ Closes #
 
 - [ ] API/data model/ADR/RTM/changelog updated where externally visible behavior changed.
 - [ ] Documentation is unchanged because the issue has no contract or traceability impact; rationale:
+- [ ] `backend/PROJECT_STATUS.md` and/or `frontend/PROJECT_STATUS.md` is updated
+      for every affected delivery surface in this commit/PR.
 
 ## Unverified items
 

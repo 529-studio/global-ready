@@ -14,3 +14,6 @@ These instructions supplement the repository root instructions for `frontend/`.
   database or provider credentials to the browser.
 - Run frontend-only checks from this directory with `npm run check`; use the
   root harness for repository gates.
+- Every commit that changes frontend source, tests, build/runtime
+  configuration, visible behavior, or these instructions must update
+  `frontend/PROJECT_STATUS.md` with evidence in the same commit.

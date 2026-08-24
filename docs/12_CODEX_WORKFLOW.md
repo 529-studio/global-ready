@@ -259,6 +259,13 @@ Never rewrite canonical behavior only to match an accidental implementation.
 Report the conflicting file, symbol/test, requirement and behavior, then
 resolve it through the owner-approved Issue.
 
+Every commit also maintains a truthful area ledger. Update
+`backend/PROJECT_STATUS.md` for backend changes and
+`frontend/PROJECT_STATUS.md` for frontend changes; update both for a
+cross-cutting change that affects both delivery surfaces. The entry names the
+capability or limitation, verification evidence and Issue/PR or canonical
+decision. The documentation gate checks this rule once the ledger files exist.
+
 ## 13. Failure, incident, and recovery procedure
 
 1. Stop delivery and keep the Issue out of Done when CI, privacy review, a

@@ -39,7 +39,9 @@ function walk(directory, predicate, files = []) {
 const requiredFiles = [
   "AGENTS.md",
   "backend/AGENTS.md",
+  "backend/PROJECT_STATUS.md",
   "frontend/AGENTS.md",
+  "frontend/PROJECT_STATUS.md",
   "backend/gradlew",
   "backend/gradle/wrapper/gradle-wrapper.properties",
   "frontend/package-lock.json",
@@ -66,6 +68,84 @@ const requiredFiles = [
   "scripts/fixtures/skill-trigger-cases.json",
 ];
 requiredFiles.forEach(requireFile);
+
+function gitOutput(args) {
+  return execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
+}
+
+function gitLines(args) {
+  const output = gitOutput(args);
+  return output ? output.split(/\r?\n/u).filter(Boolean) : [];
+}
+
+function commitContainsStatusLedgers(commit) {
+  try {
+    execFileSync("git", ["cat-file", "-e", `${commit}:backend/PROJECT_STATUS.md`], {
+      cwd: root,
+      stdio: "ignore",
+    });
+    execFileSync("git", ["cat-file", "-e", `${commit}:frontend/PROJECT_STATUS.md`], {
+      cwd: root,
+      stdio: "ignore",
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function filesChangedByCommit(commit) {
+  const revision = gitLines(["rev-list", "--parents", "-n", "1", commit]);
+  const parts = revision[0]?.split(/\s+/u) ?? [];
+  if (parts.length > 1) return gitLines(["diff", "--name-only", parts[1], commit]);
+  return gitLines(["diff-tree", "--root", "--no-commit-id", "--name-only", "-r", commit]);
+}
+
+function validateProjectStatusUpdate(files, context) {
+  if (files.length === 0) return;
+
+  const backendStatus = "backend/PROJECT_STATUS.md";
+  const frontendStatus = "frontend/PROJECT_STATUS.md";
+  const backendChanged = files.some((file) => file.startsWith("backend/") && file !== backendStatus);
+  const frontendChanged = files.some((file) => file.startsWith("frontend/") && file !== frontendStatus);
+  const backendStatusChanged = files.includes(backendStatus);
+  const frontendStatusChanged = files.includes(frontendStatus);
+
+  if (!backendStatusChanged && !frontendStatusChanged) {
+    errors.push(`${context} changes repository state without updating a PROJECT_STATUS.md ledger`);
+  }
+  if (backendChanged && !backendStatusChanged) {
+    errors.push(`${context} changes backend files without updating ${backendStatus}`);
+  }
+  if (frontendChanged && !frontendStatusChanged) {
+    errors.push(`${context} changes frontend files without updating ${frontendStatus}`);
+  }
+}
+
+const workingChanges = new Set([
+  ...gitLines(["diff", "--name-only"]),
+  ...gitLines(["diff", "--cached", "--name-only"]),
+  ...gitLines(["ls-files", "--others", "--exclude-standard"]),
+]);
+if (
+  fs.existsSync(path.join(root, "backend/PROJECT_STATUS.md")) &&
+  fs.existsSync(path.join(root, "frontend/PROJECT_STATUS.md"))
+) {
+  validateProjectStatusUpdate([...workingChanges], "Working tree");
+}
+
+const verificationBase = process.env.VERIFY_BASE_REF?.trim();
+if (verificationBase && !/^0+$/u.test(verificationBase)) {
+  try {
+    const commits = gitLines(["rev-list", "--reverse", `${verificationBase}..HEAD`]);
+    for (const commit of commits) {
+      if (!commitContainsStatusLedgers(commit)) continue;
+      validateProjectStatusUpdate(filesChangedByCommit(commit), `Commit ${commit.slice(0, 12)}`);
+    }
+  } catch (error) {
+    errors.push(`Unable to verify PROJECT_STATUS commit discipline: ${error.message}`);
+  }
+}
 
 const agentsPath = path.join(root, "AGENTS.md");
 if (fs.existsSync(agentsPath)) {

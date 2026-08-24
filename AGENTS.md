@@ -74,6 +74,19 @@
   HUMAN-FIRST: propose the design and wait for human approval before coding.
 - Do not claim completion for checks that were not run.
 
+## Project status discipline
+
+- Every repository commit made after the status-ledger baseline must update at
+  least one of `backend/PROJECT_STATUS.md` or `frontend/PROJECT_STATUS.md`.
+- A commit that changes a backend area must update the backend status file; a
+  frontend change must update the frontend status file; a cross-cutting change
+  affecting both delivery surfaces must update both.
+- Record the resulting capability or limitation, exact verification evidence,
+  and Issue/PR or canonical decision reference. Do not use a generic
+  "status updated" entry.
+- Status files must never contain tokens, credentials, CV/JD text, candidate
+  answers, provider payloads, raw audio, or environment-file values.
+
 ## Verification commands
 
 Run these exact commands from the repository root:
