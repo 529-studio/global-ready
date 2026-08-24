@@ -1,0 +1,29 @@
+{
+  "description": "Global-Ready project command and stop-verification guardrails",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/pre-tool-use.mjs\"",
+            "statusMessage": "Checking the Global-Ready command policy"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/stop-verification.mjs\"",
+            "timeout": 120,
+            "statusMessage": "Running affected-area verification"
+          }
+        ]
+      }
+    ]
+  }
+}

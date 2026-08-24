@@ -1,0 +1,109 @@
+name: Bug
+description: Report one reproducible behavior that contradicts a verified contract or expectation.
+title: "[Bug] "
+labels:
+  - bug
+  - "project:global-ready"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use synthetic/redacted examples only. Never paste tokens, CV/JD text, interview answers, provider payloads, credentials, or `.env` contents.
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: State the observable corrected behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Current evidence
+      description: Cite exact files/symbols/tests/log categories, requirement or ADR IDs, commit/PR, and redacted failure evidence.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Give deterministic steps, inputs using synthetic data, expected behavior, actual behavior, and frequency.
+      placeholder: |
+        1. Given …
+        2. When …
+        Expected: …
+        Actual: …
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_impact
+    attributes:
+      label: Technical impact
+      description: Cover affected layers, API/errors, state/invariants, data/migrations, transaction/idempotency/retry, security/privacy/logging, configuration/provider profile, and compatibility.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Define observable corrected behavior and regression/failure paths.
+    validations:
+      required: true
+
+  - type: textarea
+    id: definition_of_done
+    attributes:
+      label: Issue-specific Definition of Done
+      description: Name the regression test, exact verification commands, applicable contract/data/privacy/doc checks, review requirement, and post-merge readback.
+    validations:
+      required: true
+
+  - type: input
+    id: requirement_ids
+    attributes:
+      label: Requirement and ADR IDs
+      placeholder: FR-…, BR-…, NFR-…, AS-…, ADR-… or justified none
+    validations:
+      required: true
+
+  - type: dropdown
+    id: ai_mode
+    attributes:
+      label: AI Mode
+      options:
+        - HUMAN-FIRST
+        - AI-IMPLEMENT
+        - AI-REVIEW
+    validations:
+      required: true
+
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: Non-goals
+      description: State refactors or adjacent fixes that must not ride along.
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and recovery
+      description: Describe regression risk and how to disable, revert, or safely migrate the fix.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: hygiene
+    attributes:
+      label: Intake checks
+      options:
+        - label: I searched open and closed Issues for the same semantic failure.
+          required: true
+        - label: The reproduction and evidence are synthetic/redacted and contain no sensitive content.
+          required: true
