@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: global-ready-backend
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/global_ready}
+    username: ${DATABASE_USER:global_ready}
+    password: ${DATABASE_PASSWORD:global_ready}
+  flyway:
+    enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  port: ${SERVER_PORT:8080}
+  shutdown: graceful
+  error:
+    include-binding-errors: never
+    include-exception: false
+    include-message: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: Global-Ready Backend
+    version: "@project.version@"
+    mode: zero-cost-local
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+
+logging:
+  structured:
+    format:
+      console: ecs
+    ecs:
+      service:
+        environment: ${APP_ENVIRONMENT:local}
+
