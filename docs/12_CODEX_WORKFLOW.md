@@ -206,18 +206,20 @@ grouped batches with at most two open version-update PRs per ecosystem.
 Dependabot PRs receive the same CI and human review as any other dependency
 change; nothing auto-merges.
 
-## 10. Project automation proposal (external gate)
+## 10. Project automation (applied external settings)
 
-The following is the complete proposed external Project settings delta. It is
-not performed by repository code and remains pending until the owner replies
-exactly `APPROVE SDLC SETTINGS WRITE`:
+The owner approved the external settings write on 2026-08-24. Project
+**Global-Ready Delivery** now uses these built-in workflows:
 
-1. On Project **Global-Ready Delivery**, enable **Auto-add to project** for
-   repository `529-studio/global-ready` with filter
-   `is:issue is:open label:project:global-ready`.
-2. Enable **Item added to project** for Issues and set `Status: Backlog`.
-3. Enable **Item closed** for Issues and set `Status: Done`.
-4. Optionally enable **Auto-archive items** with
+1. **Auto-add to project** watches repository `529-studio/global-ready` with
+   filter `is:issue is:open label:project:global-ready`.
+2. **Item added to project** sets newly added Issues and pull requests to
+   `Status: Backlog`.
+3. **Item closed** applies to Issues and sets `Status: Done`.
+4. The pre-existing **Auto-add sub-issues to project** workflow remains
+   enabled.
+
+**Auto-archive items** remains deferred. It may use
    `is:closed reason:completed updated:<@today-1m` only after the first real
    Issue completes the lifecycle and its readback remains visible long enough
    to review.

@@ -40,4 +40,5 @@ values.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-24 | Recorded the approved built-in Project intake, Backlog and Done automation; no frontend runtime behavior changed. | GitHub Project workflow UI; GraphQL workflow readback | Project #1 / PR #12 |
 | 2026-08-24 | Established the frontend status ledger and confirmed that PR #12 changes workflow only, not product UI. | `./scripts/verify.sh frontend`; `./scripts/verify.sh full`; `./scripts/verify.sh smoke` | PR #12 |

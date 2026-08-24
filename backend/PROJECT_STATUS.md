@@ -41,4 +41,5 @@ provider payloads, or environment-file values here.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-24 | Recorded the approved built-in Project intake, Backlog and Done automation; no backend runtime behavior changed. | GitHub Project workflow UI; GraphQL workflow readback | Project #1 / PR #12 |
 | 2026-08-24 | Added the explicit application health contributor while retaining `/actuator/health` as the canonical endpoint. | `./scripts/verify.sh backend`; `./scripts/verify.sh full`; `./scripts/verify.sh smoke` | PR #12 |
