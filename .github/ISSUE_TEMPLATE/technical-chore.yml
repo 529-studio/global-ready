@@ -1,0 +1,95 @@
+name: Technical chore
+description: Propose one evidence-backed DevEx, dependency, documentation, or infrastructure outcome.
+title: "[Chore] "
+labels:
+  - "project:global-ready"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Keep the chore atomic and connected to current repository evidence. Do not use it to hide product behavior or a HUMAN-FIRST design decision.
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: State the measurable repository or delivery end condition.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Current evidence
+      description: Cite exact files, build definitions, workflow/job names, tests, requirement/ADR IDs, or Git evidence.
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_impact
+    attributes:
+      label: Technical impact
+      description: Cover modules/layers, build/runtime compatibility, API/data/migration impact, security/privacy/logging, configuration/providers, dependency surface, and traceability. Write “none” only with evidence.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Define observable tooling, build, documentation, or operational behavior and failure propagation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: definition_of_done
+    attributes:
+      label: Issue-specific Definition of Done
+      description: Name exact checks/commands, compatibility/security evidence, relevant docs, review gate, absence of unrelated dependencies, and merge readback.
+    validations:
+      required: true
+
+  - type: input
+    id: requirement_ids
+    attributes:
+      label: Requirement and ADR IDs
+      placeholder: NFR-…, ADR-… or a justified “repository maintenance only”
+    validations:
+      required: true
+
+  - type: dropdown
+    id: ai_mode
+    attributes:
+      label: AI Mode
+      options:
+        - HUMAN-FIRST
+        - AI-IMPLEMENT
+        - AI-REVIEW
+    validations:
+      required: true
+
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: Non-goals
+      description: State excluded product behavior, migrations, dependency upgrades, or external settings.
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and recovery
+      description: Describe CI/tooling regressions and a safe rollback or disable path.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: hygiene
+    attributes:
+      label: Intake checks
+      options:
+        - label: I searched existing Issues and automation for equivalent work.
+          required: true
+        - label: This chore adds no product feature, secret, paid service, auto-merge, or auto-deploy unless explicitly approved.
+          required: true

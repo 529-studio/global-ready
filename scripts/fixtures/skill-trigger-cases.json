@@ -1,0 +1,50 @@
+[
+  {
+    "skill": "global-ready-ticket-manager",
+    "case": "explicit",
+    "prompt": "Use $global-ready-ticket-manager. Inspect the next unfinished milestone and prepare Phase A only.",
+    "expected": "trigger-read-only"
+  },
+  {
+    "skill": "global-ready-ticket-manager",
+    "case": "implicit",
+    "prompt": "Decompose the next Global-Ready milestone into technical GitHub issues with acceptance criteria and issue-specific DoD.",
+    "expected": "trigger-read-only"
+  },
+  {
+    "skill": "global-ready-ticket-manager",
+    "case": "negative",
+    "prompt": "Implement the already-ready issue #42 on its existing feature branch.",
+    "expected": "do-not-trigger"
+  },
+  {
+    "skill": "global-ready-ticket-manager",
+    "case": "incomplete",
+    "prompt": "Put some tickets on our board, but I have not identified which repository Project to use.",
+    "expected": "trigger-read-only-and-request-project"
+  },
+  {
+    "skill": "global-ready-issue-delivery",
+    "case": "explicit",
+    "prompt": "Use $global-ready-issue-delivery to review issue #42 for PR readiness. Do not edit files.",
+    "expected": "trigger-review"
+  },
+  {
+    "skill": "global-ready-issue-delivery",
+    "case": "implicit",
+    "prompt": "Implement Global-Ready issue #42, preserve its one-issue branch scope, and provide verification evidence.",
+    "expected": "trigger-delivery"
+  },
+  {
+    "skill": "global-ready-issue-delivery",
+    "case": "negative",
+    "prompt": "Build a five-to-ten issue backlog for the next unfinished milestone and add it to the Project.",
+    "expected": "do-not-trigger"
+  },
+  {
+    "skill": "global-ready-issue-delivery",
+    "case": "incomplete",
+    "prompt": "Implement the next issue, but no issue number, URL, or acceptance criteria have been provided.",
+    "expected": "trigger-and-request-issue"
+  }
+]

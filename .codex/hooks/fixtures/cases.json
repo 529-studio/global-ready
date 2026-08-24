@@ -1,0 +1,55 @@
+{
+  "preToolUse": [
+    {
+      "name": "safe read",
+      "input": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": { "command": "git status --short" } },
+      "decision": "allow"
+    },
+    {
+      "name": "broad recursive deletion",
+      "input": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": { "command": "rm -rf /" } },
+      "decision": "deny"
+    },
+    {
+      "name": "hard reset",
+      "input": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": { "command": "git reset --hard HEAD~1" } },
+      "decision": "deny"
+    },
+    {
+      "name": "destructive clean",
+      "input": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": { "command": "git clean -fdx" } },
+      "decision": "deny"
+    },
+    {
+      "name": "force push",
+      "input": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": { "command": "git push --force-with-lease origin feature/example" } },
+      "decision": "deny"
+    },
+    {
+      "name": "direct main push",
+      "input": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": { "command": "git push origin HEAD:main" } },
+      "decision": "deny"
+    },
+    {
+      "name": "compose volume deletion",
+      "input": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": { "command": "docker compose down -v" } },
+      "decision": "deny"
+    },
+    {
+      "name": "environment file print",
+      "input": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": { "command": "cat .env" } },
+      "decision": "deny"
+    },
+    {
+      "name": "credential print",
+      "input": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "tool_input": { "command": "gh auth token" } },
+      "decision": "deny"
+    }
+  ],
+  "stop": [
+    { "name": "no diff", "input": { "hook_event_name": "Stop", "stop_hook_active": false }, "trackedChanges": false, "fastStatus": 1, "decision": "allow" },
+    { "name": "first failure", "input": { "hook_event_name": "Stop", "stop_hook_active": false }, "trackedChanges": true, "fastStatus": 1, "decision": "block" },
+    { "name": "active failure", "input": { "hook_event_name": "Stop", "stop_hook_active": true }, "trackedChanges": true, "fastStatus": 1, "decision": "allow" }
+  ],
+  "malformedRawInput": "{\"hook_event_name\":"
+}

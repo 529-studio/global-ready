@@ -1,0 +1,106 @@
+name: Feature
+description: Propose one testable product outcome with repository-specific delivery evidence.
+title: "[Feature] "
+labels:
+  - enhancement
+  - "project:global-ready"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe one atomic outcome. Never paste tokens, CV/JD text, interview answers, provider payloads, or credentials.
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: State the observable end condition, not an activity such as “implement a service.”
+      placeholder: A user can…
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Current evidence
+      description: Cite exact requirement/ADR IDs, files, packages, symbols, tests, API paths, or Git evidence.
+      placeholder: "docs/03_SRS.md FR-…; backend/src/…#Symbol; current test gap…"
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_impact
+    attributes:
+      label: Technical impact
+      description: Cover affected layers, API/error contract, domain invariants, persistence/migrations, transactions, idempotency/retry, security/privacy/logging, configuration/providers, and traceability. Write “none” only with evidence.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Use observable Given/When/Then behavior, including relevant failure paths.
+      placeholder: |
+        - Given …, when …, then …
+        - Given … failure, when …, then …
+    validations:
+      required: true
+
+  - type: textarea
+    id: definition_of_done
+    attributes:
+      label: Issue-specific Definition of Done
+      description: Name exact tests/behaviors, commands with expected zero exit status, compatibility/privacy/doc evidence, review gate, and merge readback.
+      placeholder: |
+        - [ ] Named behavior/test … passes
+        - [ ] `./scripts/verify.sh …` exits 0
+        - [ ] Applicable API/data/privacy/docs evidence …
+    validations:
+      required: true
+
+  - type: input
+    id: requirement_ids
+    attributes:
+      label: Requirement and ADR IDs
+      description: List canonical IDs, or explain why this feature has no requirement mapping.
+      placeholder: FR-…, BR-…, NFR-…, AS-…, ADR-…
+    validations:
+      required: true
+
+  - type: dropdown
+    id: ai_mode
+    attributes:
+      label: AI Mode
+      options:
+        - HUMAN-FIRST
+        - AI-IMPLEMENT
+        - AI-REVIEW
+    validations:
+      required: true
+
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: Non-goals
+      description: State adjacent work this issue explicitly excludes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and recovery
+      description: Name realistic regressions plus safe disable, revert, or migration recovery.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: hygiene
+    attributes:
+      label: Intake checks
+      options:
+        - label: I searched open and closed Issues for semantic duplicates.
+          required: true
+        - label: This issue contains no secret, token, candidate content, raw provider payload, or environment-file content.
+          required: true
