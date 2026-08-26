@@ -12,6 +12,10 @@ These instructions supplement the repository root instructions for `backend/`.
   expiry, security, and migrations are HUMAN-FIRST work.
 - Use an injected `Clock` for time-sensitive behavior. Keep external provider
   calls outside database transactions and logs free of sensitive content.
+- Follow RED -> GREEN -> REFACTOR for backend behavior. Start with the smallest
+  failing domain/unit, API slice, or PostgreSQL integration test that proves
+  the Issue outcome; do not mock away transactions, constraints, ownership,
+  expiry, idempotency, or migration behavior that the test must establish.
 - Run backend-only checks from this directory with
   `./gradlew --no-daemon check`; use the root harness for repository gates.
 - Every commit that changes backend source, tests, build/runtime configuration,

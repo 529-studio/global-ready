@@ -87,6 +87,29 @@
 - Status files must never contain tokens, credentials, CV/JD text, candidate
   answers, provider payloads, raw audio, or environment-file values.
 
+## Architecture authority and development style
+
+- The human owner is the final product and architecture authority. The owner
+  approves canonical boundaries, ADRs, aggregate/state models, public API/data
+  contracts, dependencies, security/privacy decisions, and recovery strategy.
+- Codex may investigate evidence, present architectural options and trade-offs,
+  and implement an approved design. It must not silently introduce a new
+  architectural pattern, dependency, persistence boundary, or provider.
+- An implementation conflict with an approved architecture or ADR stops the
+  Issue. Report the exact conflict and obtain an owner-approved spec or ADR
+  amendment before continuing.
+- Production behavior changes follow test-driven development: establish the
+  smallest failing test for the intended behavior or reproduced defect, make
+  the minimum implementation pass, then refactor while the suite stays green.
+- Confirm that the RED failure is caused by the missing behavior, not a broken
+  fixture or environment. Do not commit the deliberate failing state.
+- Use the lowest useful test level. Add integration/contract/manual evidence
+  where a unit test cannot prove persistence, transaction, browser, provider,
+  migration, accessibility, or clean-clone behavior.
+- Documentation, media, and configuration-only work must define an executable
+  validation first where practical; it must not invent a meaningless unit test
+  merely to claim TDD.
+
 ## Verification commands
 
 Run these exact commands from the repository root:

@@ -240,6 +240,49 @@ rename or delete any existing field. The current `Backlog`, `Ready`,
 - `AI-REVIEW`: Codex inspects evidence and reports findings; it does not fold
   opportunistic fixes into a review Issue.
 
+### Architecture direction and approval
+
+The human owner is the final product owner and technical architect. The owner
+accepts canonical scope, architectural boundaries, ADRs, aggregate/state and
+transaction models, public API/data contracts, dependencies, security/privacy
+trade-offs, and recovery strategy. HUMAN-FIRST is an approval boundary, not a
+delegation of architectural authority to an AI agent.
+
+Codex acts as an architecture analyst and delivery assistant. It reads the
+canonical sources and current implementation, identifies conflicts, proposes
+options with evidence and recovery implications, and implements only the
+owner-approved direction. An implementer must stop and raise an exact source or
+ADR conflict instead of introducing a new abstraction, dependency, datastore,
+provider, service boundary, or migration silently. The reviewer checks both
+Issue acceptance and conformance with the approved architecture.
+
+### Test-driven development contract
+
+Behavioral development follows RED -> GREEN -> REFACTOR:
+
+1. Translate one acceptance behavior or reproduced defect into the smallest
+   test at the lowest useful level.
+2. Run it and confirm it fails for the intended missing behavior, not because
+   the fixture, environment, or unrelated code is broken.
+3. Add the minimum production change that makes the new test and relevant
+   affected suite pass.
+4. Refactor names, boundaries, and duplication only while the tests remain
+   green.
+5. Run issue-specific checks, then the required repository harness modes.
+
+The deliberate RED state is evidence, not a commit. A bug fix begins with a
+reproduction test. Domain rules and pure reducers prefer unit tests; HTTP/UI
+contracts use slice or contract tests; PostgreSQL/Flyway/transaction behavior
+uses integration tests. Browser media, microphone, speech, accessibility,
+provider, and clean-clone behavior also retain documented manual or smoke
+evidence when deterministic unit tests cannot prove the real boundary.
+
+Documentation, workflow, media, and configuration-only Issues define a
+failing validator, drift check, or observable verification before the change
+where practical. They must not add a meaningless test solely to satisfy a TDD
+label. PR evidence records the RED command/failure reason, GREEN command/result,
+and any refactor; it never commits a deliberate failure or sensitive output.
+
 If the repository is connected to Codex cloud, a maintainer may request an
 additional review by commenting `@codex review` on a PR. That review is
 advisory and is never a required status check. HUMAN-FIRST review remains a

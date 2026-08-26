@@ -1,7 +1,7 @@
 # Frontend Project Status
 
-Status: M1 application shell complete; M2 setup flow not started
-Last updated: 2026-08-24
+Status: M1 application shell complete; shadowing-first v0.3 proposal awaiting external audit
+Last updated: 2026-08-25
 
 ## Current capability
 
@@ -13,9 +13,11 @@ Last updated: 2026-08-24
 
 ## Current delivery boundary
 
-The next frontend work is the M2 browser token boundary in Issue #9, followed
-by the setup/READY flow in Issue #10 after their native blockers and required
-HUMAN-FIRST approvals are complete.
+The frontend remains at the M1 shell. The proposed next boundary is a
+frontend-only synchronized shadowing pilot, but
+`docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` is not canonical. Do not
+implement Issues #9 or #10, media/player code, or a replacement M2 until the
+external audit is dispositioned and the canonical v0.3 delta is owner-approved.
 
 ## Verification
 
@@ -40,5 +42,8 @@ values.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-27 | Preserved the owner-approved architecture/TDD instruction seed and non-canonical shadowing design input before coordinated v0.3 adoption; frontend runtime remains M1. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / M0.3 approved design seed |
+| 2026-08-25 | Established human architecture authority and a RED-GREEN-REFACTOR delivery contract; no frontend runtime behavior changed. | `./scripts/verify.sh docs`; `./scripts/verify.sh fast` | Owner development-style decision / `docs/12_CODEX_WORKFLOW.md` |
+| 2026-08-25 | Recorded the non-canonical shadowing-first proposal and paused the stale interview-first frontend boundary pending external audit; frontend runtime is unchanged. | `./scripts/verify.sh docs` | Owner-approved audit-plan decision / `docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` |
 | 2026-08-24 | Recorded the approved built-in Project intake, Backlog and Done automation; no frontend runtime behavior changed. | GitHub Project workflow UI; GraphQL workflow readback | Project #1 / PR #12 |
 | 2026-08-24 | Established the frontend status ledger and confirmed that PR #12 changes workflow only, not product UI. | `./scripts/verify.sh frontend`; `./scripts/verify.sh full`; `./scripts/verify.sh smoke` | PR #12 |

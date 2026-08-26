@@ -1,7 +1,7 @@
 # Backend Project Status
 
-Status: M1 foundation complete; M2 domain implementation not started
-Last updated: 2026-08-24
+Status: M1 foundation complete; shadowing-first v0.3 proposal awaiting external audit
+Last updated: 2026-08-25
 
 ## Current capability
 
@@ -15,9 +15,11 @@ Last updated: 2026-08-24
 
 ## Current delivery boundary
 
-The next canonical backend boundary is M2, beginning with GitHub Issue #2 and
-its HUMAN-FIRST aggregate/state review. Do not implement a later Issue before
-its native blockers and owner checkpoint are resolved.
+The backend remains at M1. `docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` is
+a non-canonical proposal that would defer the current interview-first M2. Do
+not implement Issue #2 or any dependent backend Issue until the external audit
+is dispositioned and a coordinated canonical v0.3 delta receives owner
+approval. No backend product behaviour changes in the proposal stage.
 
 ## Verification
 
@@ -41,5 +43,8 @@ provider payloads, or environment-file values here.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-27 | Preserved the owner-approved architecture/TDD instruction seed and non-canonical shadowing design input before coordinated v0.3 adoption; backend runtime remains M1. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / M0.3 approved design seed |
+| 2026-08-25 | Established human architecture authority and a RED-GREEN-REFACTOR delivery contract; no backend runtime behavior changed. | `./scripts/verify.sh docs`; `./scripts/verify.sh fast` | Owner development-style decision / `docs/12_CODEX_WORKFLOW.md` |
+| 2026-08-25 | Recorded that the shadowing-first v0.3 proposal is non-canonical and blocks stale M2 backend implementation pending external audit; backend runtime is unchanged. | `./scripts/verify.sh docs` | Owner-approved audit-plan decision / `docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` |
 | 2026-08-24 | Recorded the approved built-in Project intake, Backlog and Done automation; no backend runtime behavior changed. | GitHub Project workflow UI; GraphQL workflow readback | Project #1 / PR #12 |
 | 2026-08-24 | Added the explicit application health contributor while retaining `/actuator/health` as the canonical endpoint. | `./scripts/verify.sh backend`; `./scripts/verify.sh full`; `./scripts/verify.sh smoke` | PR #12 |

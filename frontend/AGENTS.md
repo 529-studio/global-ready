@@ -12,6 +12,10 @@ These instructions supplement the repository root instructions for `frontend/`.
   out of logs, build output, fixtures, and browser persistence.
 - Read the backend base URL from `NEXT_PUBLIC_API_BASE_URL`; never expose
   database or provider credentials to the browser.
+- Follow RED -> GREEN -> REFACTOR for frontend behavior. Start with a failing
+  reducer/component/contract test at the lowest useful level, use deterministic
+  browser adapters, and retain explicit manual Chrome evidence for media,
+  microphone, speech, accessibility, or timing behavior that CI cannot prove.
 - Run frontend-only checks from this directory with `npm run check`; use the
   root harness for repository gates.
 - Every commit that changes frontend source, tests, build/runtime

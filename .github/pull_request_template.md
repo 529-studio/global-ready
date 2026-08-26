@@ -24,6 +24,17 @@ Closes #
 | `./scripts/verify.sh fast` | |
 | Issue-specific test/check | |
 
+## Architecture and TDD evidence
+
+- Architecture owner/approved decision or ADR:
+- Architecture boundaries checked:
+- RED — test/check command and intended failure reason:
+- GREEN — minimal implementation command/result:
+- REFACTOR — cleanup performed with tests remaining green, or justified none:
+- Manual boundary evidence that deterministic tests cannot prove:
+
+<!-- Do not commit a deliberate failing test state or paste sensitive failure output. Documentation/media/config-only changes may use a failing validator or observable check instead of a meaningless unit test. -->
+
 ## Contract and data impact
 
 - API/request/response/ProblemDetail impact:
