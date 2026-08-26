@@ -23,6 +23,15 @@ function requireFile(file) {
   }
 }
 
+function requireMarkers(file, markers) {
+  const absolute = path.join(root, file);
+  if (!fs.existsSync(absolute)) return;
+  const content = fs.readFileSync(absolute, "utf8");
+  for (const marker of markers) {
+    if (!content.includes(marker)) errors.push(`${file} is missing canonical marker: ${marker}`);
+  }
+}
+
 function walk(directory, predicate, files = []) {
   if (!fs.existsSync(directory)) return files;
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
@@ -52,11 +61,19 @@ const requiredFiles = [
   "docs/03_SRS.md",
   "docs/04_ARCHITECTURE.md",
   "docs/05_DATA_AND_API.md",
+  "docs/06_OPEN_QUESTIONS.md",
+  "docs/07_MILESTONE_RULES.md",
   "docs/08_MILESTONE_PLAN.md",
   "docs/09_TRACEABILITY.md",
   "docs/10_CHANGELOG_AND_READINESS.md",
+  "docs/11_M1_IMPLEMENTATION_HANDOFF.md",
   "docs/12_CODEX_WORKFLOW.md",
+  "docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md",
   "docs/adr/0001-modular-monolith-monorepo.md",
+  "docs/adr/0002-browser-speech-text-provider.md",
+  "docs/adr/0003-session-aggregate-retention.md",
+  "docs/adr/0004-provider-transaction-boundary.md",
+  "docs/adr/0005-shadowing-content-and-media-boundary.md",
   ".codex/hooks.json",
   ".github/ISSUE_TEMPLATE/config.yml",
   ".github/ISSUE_TEMPLATE/feature.yml",
@@ -68,6 +85,24 @@ const requiredFiles = [
   "scripts/fixtures/skill-trigger-cases.json",
 ];
 requiredFiles.forEach(requireFile);
+
+requireMarkers("docs/01_PRODUCT_BRIEF.md", [
+  "Status: Canonical v0.3",
+  "guided imitation -> optional repetition -> independent transfer -> reflection",
+  "M2 pilot MVP",
+  "M3 portfolio/CV MVP",
+]);
+requireMarkers("docs/02_ASSUMPTIONS_AND_DECISIONS.md", [
+  "Status: Canonical v0.3",
+  "D-032",
+  "D-041",
+  "optional repetition",
+]);
+requireMarkers("docs/adr/0005-shadowing-content-and-media-boundary.md", [
+  "# ADR-0005:",
+  "Status: Accepted",
+  "backend never uploads, stores, proxies, or streams media bytes",
+]);
 
 function gitOutput(args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();

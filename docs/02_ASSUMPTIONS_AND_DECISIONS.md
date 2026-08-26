@@ -1,7 +1,7 @@
 # Assumptions and Decisions
 
-Status: Canonical v0.2  
-Last updated: 2026-08-24
+Status: Canonical v0.3
+Last updated: 2026-08-27
 
 This file has highest authority when planning documents disagree.
 
@@ -40,6 +40,20 @@ This file has highest authority when planning documents disagree.
 | D-029 | Reports contain strengths, one to three priorities, evidence turn IDs, and improved outlines; no numeric score or full sample answer. | Actionable and grounded without false precision. |
 | D-030 | Real-provider tests are a small manual evaluation corpus; normal CI uses fake/fixture-based tests. | Live model output is nondeterministic and quota-dependent. |
 | D-031 | Local Docker is the required deployment target. Public hosting and public rate limiting are optional hardening. | Guarantees zero-cost completion. |
+| D-032 | The first product loop is guided imitation, optional repetition, independent transfer, and reflection for workplace/interview English. | Validates active speaking practice without claiming universal learning superiority. |
+| D-033 | M2 includes a public read-only Spring shadowing exercise metadata/content-contract API. | Keeps Java/Spring in the first product slice without inventing persistence. |
+| D-034 | Browsers fetch reference media/captions directly; the backend and database never carry media bytes. | Avoids backend bandwidth/storage coupling and database BLOBs. |
+| D-035 | One versioned manifest is the exercise source of truth and WebVTT is derived and bijection-validated. | Prevents script, role, timing, and caption drift. |
+| D-036 | Repetition is optional in M2. | A fixed replay count lacks pilot evidence. |
+| D-037 | Transfer unlocks only after reset, start, no forward seek, and a non-stale native ended event in one playback generation. | Creates a testable reference-playback gate without claiming speech verification. |
+| D-038 | M2 learner text is transient application state; privacy claims cover intentional app behavior, and transcript hiding is UI-only concealment. | Browser/OS/extension behavior and public VTT cannot be secured by React state. |
+| D-039 | Real human media requires private releases, explicit public/redistribution rights, media-specific notice, non-personal record ID, and multi-artifact hashes. | Public Git history and object storage require provenance beyond a checksum. |
+| D-040 | M2 is the pilot MVP; M3 is the portfolio/CV MVP and precedes scenario-pack or STT expansion. | Preserves both product validation and Spring learning value. |
+| D-041 | Frontend M2 verification uses Vitest, React Testing Library, and one focused Playwright Chromium flow. | Pure logic stays deterministic while one test proves the real browser boundary. |
+
+D-009 through D-030 remain authoritative only for future adaptive
+interview/persisted work unless a global privacy, no-score, or fake-provider
+rule explicitly applies to M2.
 
 ## 2. Implementation constraints
 
