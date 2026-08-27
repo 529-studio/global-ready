@@ -103,6 +103,33 @@ requireMarkers("docs/adr/0005-shadowing-content-and-media-boundary.md", [
   "Status: Accepted",
   "backend never uploads, stores, proxies, or streams media bytes",
 ]);
+requireMarkers("docs/03_SRS.md", [
+  "Status: Canonical v0.3",
+  "FR-100 MUST",
+  "FR-109 MUST",
+  "BR-100",
+  "BR-103",
+  "NFR-050 MUST",
+  "NFR-054 MUST",
+  "AS-09",
+  "AS-14",
+]);
+requireMarkers("docs/04_ARCHITECTURE.md", [
+  "com.globalready.shadowing",
+  "browser-direct media",
+  "ADR-0005",
+]);
+requireMarkers("docs/05_DATA_AND_API.md", [
+  "`GET /shadowing-exercises/{exerciseId}`",
+  "M2 adds no table or migration",
+  "never proxies media bytes",
+]);
+requireMarkers("docs/09_TRACEABILITY.md", [
+  "FR-100–FR-109",
+  "BR-100–BR-103",
+  "NFR-050–NFR-054",
+  "AS-09–AS-14",
+]);
 
 function gitOutput(args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
@@ -252,6 +279,7 @@ if (fs.existsSync(apiPath)) {
   const api = fs.readFileSync(apiPath, "utf8");
   const requiredContractMarkers = [
     "base path: `/api/v1`",
+    "`GET /shadowing-exercises/{exerciseId}`",
     "`POST /access-grants`",
     "`POST /interview-sessions`",
     "`PUT /interview-sessions/{sessionId}/turns/{turnId}/answer`",

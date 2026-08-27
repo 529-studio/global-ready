@@ -1,13 +1,118 @@
 # Data and API Contract
 
-Status: Canonical planning contract v0.2  
-Last updated: 2026-08-24
+Status: Canonical planning contract v0.3
+Last updated: 2026-08-27
 
-This document fixes the MVP resource model and endpoint responsibilities. Generated OpenAPI becomes the executable contract when implemented; material divergence requires a spec delta.
+This document defines the planned M2 public exercise contract and preserves the
+interview data/API contract for a separately approved M3 or conditional later
+milestone. The current runtime is M1: no shadowing endpoint is implemented.
+Generated OpenAPI becomes executable authority only when the relevant endpoint
+is implemented; material divergence requires an owner-approved spec delta.
 
-## 1. Data model
+## 1. M2 public shadowing exercise contract
 
-### 1.1 AnonymousAccessGrant
+The API uses this convention:
+
+- base path: `/api/v1`;
+
+M2 defines
+`GET /shadowing-exercises/{exerciseId}` as a public, read-only metadata/content
+request. The complete planned path is
+`GET /api/v1/shadowing-exercises/{exerciseId}`.
+
+M2 requires no authentication, anonymous access token, account, cookie, or
+`Idempotency-Key` because the operation reads public content and creates no
+learner state. Spring returns JSON metadata; the browser requests the referenced
+media and captions directly. The backend never proxies media bytes. M2 adds no table or migration,
+and it adds no learner attempt, progress, transcript,
+audio, report, AI-provider, or STT boundary.
+
+### 1.1 Successful response
+
+An available, active, fully validated exercise returns `200 application/json`
+with this stable planning shape:
+
+```json
+{
+  "id": "architecture-trade-off",
+  "version": 1,
+  "title": "Explain an architecture trade-off",
+  "targetRole": "DEVELOPER",
+  "media": {
+    "url": "/media/shadowing/architecture-trade-off-v1.mp4",
+    "captionsUrl": "/media/shadowing/architecture-trade-off-v1.vtt",
+    "expectedDurationMs": 45000,
+    "assetVersion": "v1",
+    "sha256": "synthetic-documentation-example-not-an-asset-hash"
+  },
+  "cues": [
+    {
+      "id": "cue-001",
+      "startMs": 0,
+      "endMs": 4000,
+      "speaker": "DEVELOPER",
+      "text": "I chose the modular approach because the transaction boundary stays explicit.",
+      "intentVi": "Nêu quyết định và lý do",
+      "keyChunks": ["I chose", "because", "transaction boundary"]
+    }
+  ],
+  "transfer": {
+    "prompt": "Explain a trade-off from your own project.",
+    "checklist": ["Context", "Decision or action", "Reasoning or evidence", "Result or next step"]
+  },
+  "rights": {
+    "recordId": "FIXTURE-NONPERSON-001",
+    "publicationScope": "PUBLIC_REPOSITORY_AND_DEMO",
+    "coveredAssetSha256": "synthetic-documentation-example-not-an-asset-hash",
+    "status": "CLEARED"
+  }
+}
+```
+
+The two `synthetic-documentation-example-not-an-asset-hash` values are
+documentation literals, never accepted asset hashes. Content validation must
+require real SHA-256 values that match the exact approved artifacts before any
+human media is made available.
+
+The response is a public contract, not a learner record. `media.url` and
+`media.captionsUrl` reference browser-direct resources; Spring and PostgreSQL
+must not upload, store, serve, stream, or proxy their bytes.
+
+### 1.2 Unknown or inactive exercise
+
+An unknown or inactive exercise returns correlated `404
+application/problem+json` and does not reveal unpublished content:
+
+```json
+{
+  "type": "https://global-ready.dev/problems/shadowing-exercise-not-found",
+  "title": "Shadowing exercise not found",
+  "status": 404,
+  "detail": "The requested shadowing exercise is unavailable.",
+  "instance": "/api/v1/shadowing-exercises/unknown",
+  "code": "SHADOWING_EXERCISE_NOT_FOUND",
+  "correlationId": "7ca...",
+  "retryable": false
+}
+```
+
+### 1.3 Invalid manifest
+
+A manifest with invalid cue order/identity/timing/text/role, a WebVTT mismatch,
+unsupported publication status, incomplete rights metadata, duration drift, or
+an artifact hash mismatch fails closed. It is never exposed as a partial `200`
+response. The adapter may make it unavailable during startup/build validation
+or return a correlated non-content-leaking server problem; the implementation
+Issue must choose and test one representation without weakening the gate.
+
+## 2. Future adaptive interview data model (M3+)
+
+Everything from this section onward is a retained planning contract for M3 or
+a conditional later adaptive interview milestone. It is not implemented by M1,
+does not apply to M2, and must not be used to infer an M2 database, token,
+idempotency, provider, or report boundary.
+
+### 2.1 AnonymousAccessGrant
 
 Security infrastructure issued before a session exists.
 
@@ -31,7 +136,7 @@ Rules:
 - after binding, authorisation lifetime is derived from the bound session's `expiresAt`;
 - one grant binds to at most one session.
 
-### 1.2 CandidateContext
+### 2.2 CandidateContext
 
 An owned value object persisted within the session row, not a reusable entity.
 
@@ -46,7 +151,7 @@ frozenAt: nullable Instant
 
 Context is editable only when `frozenAt == null` and session state is `DRAFT`.
 
-### 1.3 InterviewSession
+### 2.3 InterviewSession
 
 ```text
 id: UUID
@@ -72,7 +177,7 @@ version: long
 
 `EXPIRED` is an effective state computed when `now >= expiresAt`; it does not need to be written before purge.
 
-### 1.4 InterviewTurn
+### 2.4 InterviewTurn
 
 ```text
 id: UUID
@@ -104,7 +209,7 @@ Constraints:
 - only one open `AWAITING_ANSWER` turn per active session, enforced in application logic and concurrency tests;
 - provider error metadata contains category/code only, never provider payload.
 
-### 1.5 InterviewReport
+### 2.5 InterviewReport
 
 ```text
 id: UUID
@@ -128,7 +233,7 @@ version: long
 
 API status `NOT_STARTED` means no report row exists.
 
-### 1.6 Relationships
+### 2.6 Relationships
 
 ```text
 AnonymousAccessGrant 1 ---- 0..1 InterviewSession
@@ -140,7 +245,7 @@ Foreign keys delete dependent turns and report with the session. Session deletio
 
 No `CandidateSubject`, reusable profile, transcript-segment, audio, provider-session, or usefulness-feedback table exists.
 
-## 2. Data safety and indexes
+## 3. Future interview data safety and indexes (M3+)
 
 Required database constraints/indexes:
 
@@ -155,7 +260,11 @@ Required database constraints/indexes:
 
 Sensitive text remains in PostgreSQL for at most the logical session lifetime and is never duplicated into idempotency response blobs.
 
-## 3. API conventions
+## 4. API conventions
+
+The base path and ProblemDetail/correlation rules apply to M2. The bearer-token
+and idempotency conventions below apply only to future adaptive interview
+operations; they do not apply to the public M2 GET.
 
 - base path: `/api/v1`;
 - JSON: camelCase;
@@ -185,9 +294,12 @@ Example error:
 
 Errors never echo candidate text, tokens, provider payloads, or stack traces.
 
-## 4. Endpoint contract
+## 5. Future adaptive interview endpoint contract (M3+)
 
-### 4.1 Anonymous access
+The retained endpoints in this section remain planned rather than implemented.
+They are future-scoped and are not mapped to M2.
+
+### 5.1 Anonymous access
 
 #### `POST /access-grants`
 
@@ -204,7 +316,7 @@ Response `201`:
 
 The browser stores the token only in `sessionStorage`. This endpoint is rate-limited only in a public deployment.
 
-### 4.2 Sessions
+### 5.2 Sessions
 
 #### `POST /interview-sessions`
 
@@ -276,7 +388,7 @@ Deletes the session aggregate and access grant. Returns `204`. A repeated reques
 
 There is no list/history endpoint.
 
-### 4.3 Turns
+### 5.3 Turns
 
 #### `PUT /interview-sessions/{sessionId}/turns/{turnId}/answer`
 
@@ -340,7 +452,7 @@ Returns ordered turns. Candidate final text appears only for answered turns. Int
 
 There is no candidate-facing interviewer-output write endpoint.
 
-### 4.4 Report
+### 5.4 Report
 
 #### `POST /interview-sessions/{sessionId}/report`
 
@@ -354,7 +466,7 @@ Returns `NOT_STARTED` when no row exists, or the persisted status/result.
 
 There is no usefulness-feedback endpoint.
 
-## 5. Report schema
+## 6. Future interview report schema (M3+)
 
 ```json
 {
@@ -408,7 +520,7 @@ Validation:
 - required Vietnamese and English fields are non-blank;
 - invalid structured output is not persisted as `COMPLETE`.
 
-## 6. Idempotency rules
+## 7. Future interview idempotency rules (M3+)
 
 | Operation | Key storage | Same key + same fingerprint | Same key + different fingerprint |
 |---|---|---|---|
@@ -419,7 +531,7 @@ Validation:
 
 Keys are not reused across rows or operation types. Raw key values are not logged; storage may use a stable hash.
 
-## 7. Retention
+## 8. Future interview retention (M3+)
 
 | Data | Policy |
 |---|---|

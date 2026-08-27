@@ -44,6 +44,7 @@ provider payloads, or environment-file values here.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-27 | Defined canonical v0.3 SRS, architecture, public exercise API, and RTM for Spring metadata with browser-direct media; backend runtime remains M1 and the planned M2 GET is not implemented. | `./scripts/verify.sh docs` | Issue #17 / D-032–D-041 / ADR-0005 |
 | 2026-08-27 | Established v0.3 product authority and ADR-0005 for shadowing-first, Spring metadata, direct media, privacy, rights, and M2/M3 cut lines; backend product runtime remains unchanged and M0.3 is still in progress. | `./scripts/verify.sh docs` | Issue #17 / owner-approved `docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` |
 | 2026-08-27 | Preserved the owner-approved architecture/TDD instruction seed and non-canonical shadowing design input before coordinated v0.3 adoption; backend runtime remains M1. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / M0.3 approved design seed |
 | 2026-08-25 | Established human architecture authority and a RED-GREEN-REFACTOR delivery contract; no backend runtime behavior changed. | `./scripts/verify.sh docs`; `./scripts/verify.sh fast` | Owner development-style decision / `docs/12_CODEX_WORKFLOW.md` |
