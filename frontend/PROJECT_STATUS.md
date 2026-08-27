@@ -43,6 +43,7 @@ values.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-27 | Corrected the canonical system-context diagram so the browser sends only exercise metadata requests to Spring and sends media/caption requests directly to the deterministic or separately approved media origin; frontend runtime remains the M1 shell and `/practice` is not implemented. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / ADR-0005 / Task 2 fix round 1 |
 | 2026-08-27 | Defined canonical v0.3 SRS, architecture, public exercise API, and RTM for Spring metadata with browser-direct media; frontend runtime remains the M1 shell and `/practice` is not implemented. | `./scripts/verify.sh docs` | Issue #17 / D-032–D-041 / ADR-0005 |
 | 2026-08-27 | Established v0.3 product authority and ADR-0005 for shadowing-first, Spring metadata, direct media, privacy, rights, and M2/M3 cut lines; frontend product runtime remains unchanged and M0.3 is still in progress. | `./scripts/verify.sh docs` | Issue #17 / owner-approved `docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` |
 | 2026-08-27 | Preserved the owner-approved architecture/TDD instruction seed and non-canonical shadowing design input before coordinated v0.3 adoption; frontend runtime remains M1. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / M0.3 approved design seed |

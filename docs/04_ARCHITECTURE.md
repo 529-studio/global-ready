@@ -22,11 +22,12 @@ claim that the shadowing endpoint, player, content adapter, or tests exist.
 ```text
 Desktop Chrome
 ├── Next.js /practice UI
-├── API adapter ─────────────── GET metadata ───────┐
-├── playback state machine                           │
-├── media adapter                                    v
-└── <video>/<track> ── direct GET/HEAD/range ─> Spring Boot modular monolith
-                         deterministic origin       └── com.globalready.shadowing
+├── API adapter ── GET public exercise metadata ──> Spring Boot modular monolith
+│                                                    └── com.globalready.shadowing
+├── playback state machine
+└── media adapter + <video>/<track>
+      └── direct media/caption GET/HEAD/range ─────> deterministic local/static media origin
+                                                     or separately approved public media origin
 ```
 
 Spring returns public exercise metadata and content fields. The browser, not
