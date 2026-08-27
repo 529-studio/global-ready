@@ -55,6 +55,11 @@ D-009 through D-030 remain authoritative only for future adaptive
 interview/persisted work unless a global privacy, no-score, or fake-provider
 rule explicitly applies to M2.
 
+For D-038, transcript/source concealment during independent transfer means the
+transcript, cue text, key chunks, and product reveal controls are absent from
+both the rendered product UI and its accessibility tree. This is UI-only
+concealment, not authentication, anti-cheat, DRM, or other content security.
+
 ## 2. Implementation constraints
 
 - Pin exact runtime and dependency versions when scaffolding; do not use unbounded `latest` application dependencies.

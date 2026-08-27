@@ -1,6 +1,6 @@
 # Frontend Project Status
 
-Status: M1 application shell complete; shadowing-first v0.3 proposal awaiting external audit
+Status: M1 application shell complete; canonical v0.3 shadowing boundary approved
 Last updated: 2026-08-27
 
 ## Current capability
@@ -13,11 +13,12 @@ Last updated: 2026-08-27
 
 ## Current delivery boundary
 
-The frontend remains at the M1 shell. The proposed next boundary is a
-frontend-only synchronized shadowing pilot, but
-`docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` is not canonical. Do not
-implement Issues #9 or #10, media/player code, or a replacement M2 until the
-external audit is dispositioned and the canonical v0.3 delta is owner-approved.
+The frontend runtime remains at the M1 shell. Canonical v0.3 sets the next
+product boundary as a `/practice` shadowing pilot backed by Spring metadata and
+browser-direct media. Issue #17 changes documentation only, so the route and
+player are not implemented yet and M0.3 remains in progress. M2 implementation
+proceeds through separately scoped, approved v0.3 Issues rather than the stale
+frontend-only Issues #9 and #10 path.
 
 ## Verification
 
@@ -42,7 +43,7 @@ values.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
-| 2026-08-27 | Established v0.3 product authority and ADR-0005 for shadowing-first, Spring metadata, direct media, privacy, rights, and M2/M3 cut lines; frontend product runtime remains unchanged and M0.3 is still in progress. | `./scripts/verify.sh docs` | M0.3 canonical-delta Issue / owner-approved `docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` |
+| 2026-08-27 | Established v0.3 product authority and ADR-0005 for shadowing-first, Spring metadata, direct media, privacy, rights, and M2/M3 cut lines; frontend product runtime remains unchanged and M0.3 is still in progress. | `./scripts/verify.sh docs` | Issue #17 / owner-approved `docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` |
 | 2026-08-27 | Preserved the owner-approved architecture/TDD instruction seed and non-canonical shadowing design input before coordinated v0.3 adoption; frontend runtime remains M1. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / M0.3 approved design seed |
 | 2026-08-25 | Established human architecture authority and a RED-GREEN-REFACTOR delivery contract; no frontend runtime behavior changed. | `./scripts/verify.sh docs`; `./scripts/verify.sh fast` | Owner development-style decision / `docs/12_CODEX_WORKFLOW.md` |
 | 2026-08-25 | Recorded the non-canonical shadowing-first proposal and paused the stale interview-first frontend boundary pending external audit; frontend runtime is unchanged. | `./scripts/verify.sh docs` | Owner-approved audit-plan decision / `docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md` |

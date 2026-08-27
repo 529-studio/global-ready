@@ -34,7 +34,9 @@ operating system, IME, extension, crash recovery, cache, or developer tools.
   bytes.
 - M2 performs no learner audio capture. Learner text is transient application
   state that the application does not intentionally persist, log,
-  analytics-track, or transmit. Transcript hiding is UI-only concealment, not
+  analytics-track, or transmit. During independent transfer, transcript/source
+  content and product reveal controls are absent from both the rendered product
+  UI and its accessibility tree. This is UI-only concealment, not
   authentication, anti-cheat, DRM, or content security.
 - M2 selects no cloud or object-storage provider. A clean clone and CI contain
   no cloud credential, hosted-media requirement, or third-party media network
