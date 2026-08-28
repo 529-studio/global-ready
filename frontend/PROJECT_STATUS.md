@@ -15,10 +15,12 @@ Last updated: 2026-08-28
 
 The frontend runtime remains at the M1 shell. Canonical v0.3 sets the next
 product boundary as a `/practice` shadowing pilot backed by Spring metadata and
-browser-direct media. Issue #17 changes documentation only, so the route and
-player are not implemented yet and M0.3 remains in progress. M2 implementation
-proceeds through separately scoped, approved v0.3 Issues rather than the stale
-frontend-only Issues #9 and #10 path.
+browser-direct media. Issue #17 is documentation-only M0.3 work, so the route
+and player are not implemented and M0.3 remains in progress. No M2
+implementation may start until the canonical PR is manually merged and
+ticket-manager Phase A receives the exact `APPROVE BOARD WRITE` approval to
+create implementation-ready M2 Issues. Until then no M2 backlog is approved,
+and frontend-only Issues #9 and #10 remain stale rather than active work.
 
 ## Verification
 
@@ -43,6 +45,7 @@ values.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-28 | Corrected the current delivery boundary so manual canonical merge and separately approved ticket-manager Phase A are explicit prerequisites for ready M2 Issues; frontend runtime remains the M1 shell, no M2 backlog or `/practice` exists, and Issues #9/#10 remain stale. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 5 fix round 1 |
 | 2026-08-28 | Aligned effective repository instructions with the M2 shadowing UI and browser-direct-media boundary backed by Spring metadata; frontend runtime remains the M1 shell and no `/practice`, learner state, media, or backlog implementation exists. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 5 instruction alignment |
 | 2026-08-28 | Corrected the empty media registry so no sentinel row can evade the required provenance fields; no real human media, cloud storage, or product code was added, and frontend runtime remains the M1 shell. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 4 fix round 1 / D-039 |
 | 2026-08-28 | Defined the fail-closed media publication and non-personal provenance gate; no real human media, cloud storage, or product code was added, and frontend runtime remains the M1 shell. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / D-034, D-035, D-039 / ADR-0005 |
