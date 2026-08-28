@@ -1,3 +1,10 @@
+> **HISTORICAL NON-CANONICAL PROMPT**
+>
+> This file records superseded private-alpha/WebRTC planning assumptions.
+> Do not use this file to select current work. Current authority is
+> `docs/01_PRODUCT_BRIEF.md` through `docs/12_CODEX_WORKFLOW.md`, their ADRs,
+> and current source/test evidence.
+
 # Prompt for Claude: Global-Ready Milestone Brainstorm
 
 Copy this prompt into Claude and attach or paste all files in this planning pack.

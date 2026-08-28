@@ -47,6 +47,7 @@ function walk(directory, predicate, files = []) {
 
 const requiredFiles = [
   "AGENTS.md",
+  "CLAUDE_MILESTONE_PROMPT.md",
   "backend/AGENTS.md",
   "backend/PROJECT_STATUS.md",
   "frontend/AGENTS.md",
@@ -157,6 +158,28 @@ requireMarkers("MEDIA_NOTICE.md", [
   "PUBLIC_REPOSITORY_AND_DEMO",
   "SHA-256",
   "No approved human media assets are present",
+]);
+requireMarkers("AGENTS.md", [
+  "## M2 shadowing invariants",
+  "## Future adaptive interview invariants",
+  "Auto-merge must never be enabled",
+]);
+requireMarkers("backend/AGENTS.md", [
+  "metadata/content contract",
+  "must not transport media bytes",
+]);
+requireMarkers("frontend/AGENTS.md", [
+  "UI-only concealment",
+  "must not claim speech verification",
+]);
+requireMarkers("docs/12_CODEX_WORKFLOW.md", [
+  "Media-rights gate",
+  "M2 shadowing Issue",
+  "Auto-merge must never be enabled",
+]);
+requireMarkers("CLAUDE_MILESTONE_PROMPT.md", [
+  "HISTORICAL NON-CANONICAL PROMPT",
+  "Do not use this file to select current work",
 ]);
 
 function gitOutput(args) {

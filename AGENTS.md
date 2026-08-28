@@ -21,7 +21,33 @@
 - Gemini is opt-in through explicit environment configuration.
 - Real Gemini calls are never part of normal CI.
 
-## Domain invariants
+## M2 shadowing invariants
+
+- Spring owns the public, read-only exercise metadata/content contract only.
+- The browser fetches reference media and captions directly from the
+  deterministic repository fixture or a separately approved public origin.
+- The backend and database never upload, store, proxy, stream, or persist
+  media bytes.
+- One versioned manifest is the exercise source of truth; WebVTT is derived
+  and must remain in one-to-one cue correspondence with it.
+- Transfer unlocks only after reset, start, no forward seek, and the current
+  playback generation's native `ended` event. Stale events cannot unlock a
+  newer generation.
+- Reference playback is system-observed. Speaking completion is self-attested,
+  transcript hiding is UI-only concealment, and the product must not claim
+  speech verification.
+- M2 has no learner persistence, learner audio capture, STT, AI provider,
+  anonymous session token, report, or backend/database media path.
+- Every real human asset must pass the media-rights and provenance gate before
+  merge; private releases remain outside Git.
+- Planned evidence combines Spring JUnit/MockMvc contract tests, Vitest state
+  tests, React Testing Library component/accessibility checks, and one focused
+  Playwright Chromium flow.
+
+## Future adaptive interview invariants
+
+The invariants below apply only after a separately approved canonical adaptive
+interview milestone opens. They do not describe M2 or the current M1 runtime.
 
 - InterviewSession is the aggregate root.
 - CandidateContext is an embedded/value object and becomes immutable at READY.
@@ -69,6 +95,7 @@
   unless the user explicitly authorizes that external write.
 - GitHub board writes require the exact approval phrase:
   APPROVE BOARD WRITE
+- Auto-merge must never be enabled; human review and manual merge are required.
 - Changes to aggregates, state machines, transaction boundaries, idempotency,
   anonymous tokens, expiration, security, or database migrations are
   HUMAN-FIRST: propose the design and wait for human approval before coding.

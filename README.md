@@ -12,9 +12,11 @@
 
 </div>
 
-Global-Ready is a portfolio project for practising English software-engineering
-interviews while rebuilding modern Java/Spring skills. It is designed to stay
-locally runnable, privacy-conscious, and demonstrable without paid services.
+Global-Ready helps a Vietnamese software developer practise workplace and
+interview English through a shadowing-first loop: guided imitation, optional
+repetition, independent transfer, and reflection. It is also a zero-cost
+portfolio/relearning project for modern Java and Spring, with capabilities
+added only when product evidence justifies them.
 
 ## Media boundary
 
@@ -23,9 +25,9 @@ any reference asset. Source-code license does not grant media rights. The
 browser obtains approved media directly; database/backend transport never
 carries media bytes.
 
-> **Current checkpoint:** M1 provides the production-shaped infrastructure.
-> Interview behaviour starts in M2; it is intentionally not represented by
-> empty domain entities or placeholder APIs in this release.
+> **Current checkpoint:** product runtime remains the completed M1 scaffold.
+> M0.3 is the documentation/workflow-only canonical delta. M2 product coding
+> waits for canonical merge and a separately approved implementation backlog.
 
 ## Choose your path
 
@@ -37,20 +39,23 @@ carries media bytes.
 | Understand the design | [System architecture](#system-architecture) |
 | Diagnose a local problem | [Troubleshooting](#common-troubleshooting) |
 
-## What the MVP will do
+## What the pilot MVP will do
 
-One anonymous desktop-Chrome user pastes project context, completes up to six
-English project deep-dive turns through browser speech recognition or text, and
-receives evidence-grounded Vietnamese feedback. The app stores no audio and
-expires session data after 24 hours.
+M2 will expose one public, read-only shadowing exercise metadata/content
+contract from Spring. The browser will load deterministic reference media and
+captions directly, guide imitation and optional repetition, require one valid
+complete reference-playback generation, then support self-attested speaking or
+transient text transfer and four-part reflection. M2 has no learner account,
+persistence, speech verification, raw-audio capture, AI provider, or report.
 
 ## System architecture
 
 ```mermaid
 flowchart LR
     U[Desktop Chrome user] --> F[Next.js frontend]
-    F -->|HTTP / JSON| B[Spring Boot modular monolith]
-    B --> P[(PostgreSQL)]
+    F -->|exercise metadata only| B[Spring Boot modular monolith]
+    F -->|media + captions directly| M[Deterministic fixture origin]
+    B -. M1 wiring; unused by M2 shadowing .-> P[(PostgreSQL)]
     B --> O[Actuator + OpenAPI]
 
     subgraph Local Docker Compose
@@ -60,9 +65,11 @@ flowchart LR
     end
 ```
 
-The backend is a **modular monolith**: one Spring Boot deployable, one database,
-and domain modules inside the codebase. This keeps M1 simple to run while
-leaving clear boundaries for the M2/M3 interview workflow. See
+The backend remains a **modular monolith**. M2 adds a Spring metadata/content
+contract but no shadowing persistence or media-byte path; the browser owns
+direct media requests and transient learner state. Product-justified
+persistence, transactions, idempotency, security/privacy, and recovery are the
+M3 portfolio/CV boundary. See
 [the architecture record](docs/04_ARCHITECTURE.md) and
 [ADR 0001](docs/adr/0001-modular-monolith-monorepo.md) for the reasoning.
 
@@ -89,16 +96,18 @@ Node.js 20.9 or later; this repository pins Node 24 for reproducibility.
 global-ready/
 ├── backend/          Spring MVC, JPA, Flyway, Actuator, OpenAPI
 ├── frontend/         Next.js App Router and TypeScript
-├── docs/             Canonical v0.2 specification and ADRs
+├── docs/             Canonical v0.3 specification, workflow, and ADRs
+├── MEDIA_NOTICE.md   Public media-rights and provenance gate
 ├── compose.yaml
 └── .env.example
 ```
 
 | Area | Responsibility now | Starts later |
 |---|---|---|
-| `backend/` | HTTP foundation, health, OpenAPI, JPA/Flyway wiring, observability | Session, turn and report modules |
-| `frontend/` | Next.js app shell and M1 status page | Interview, speech and report UI |
-| `docs/` | Product contract, ADRs and milestone gates | Updated with owner-led decisions |
+| `backend/` | M1 HTTP foundation, health, OpenAPI, JPA/Flyway wiring, observability | M2 public shadowing metadata/content contract; product-justified persistence in M3 |
+| `frontend/` | Next.js app shell and M1 status page | M2 `/practice` shadowing UI with browser-direct media and transient learner state |
+| `docs/` | Canonical v0.3 product contract, ADRs, workflow, milestones, and traceability | Updated only through approved Issues/decisions |
+| `MEDIA_NOTICE.md` | Fail-closed public media attestation; no approved human asset is present | Future asset rows after rights/provenance approval |
 | `compose.yaml` | Isolated local PostgreSQL, backend and frontend stack | Continues as the local acceptance environment |
 
 ## Required local tools
@@ -108,7 +117,8 @@ global-ready/
 - Node.js 24.19.0 and npm when running the frontend outside Docker. The
   frontend includes `.nvmrc` for `nvm` users.
 
-No Gemini key is needed for M1 or the future default fake-provider path.
+No Gemini or cloud-storage key is needed for M1, the M2 deterministic fixture,
+or the future default fake-provider path.
 
 Check which Docker Compose command is available:
 
@@ -479,36 +489,46 @@ Included:
 
 Not implemented yet:
 
-- anonymous access and session token;
-- session/turn/report entities;
-- migrations for domain tables;
-- fake or Gemini gateways;
-- speech recognition and synthesis UI;
-- interview/report flow.
+- the M2 public shadowing exercise metadata/content endpoint;
+- the `/practice` shadowing UI or deterministic media/caption fixture;
+- learner playback, transfer, reflection, or transient-text state;
+- any shadowing JPA entity, repository, migration, or backend media path;
+- real human media, cloud storage, speech verification, STT, or provider call;
+- future adaptive interview access, session, turn, report, or retention flows.
 
-Those begin at M2/M3 according to [the milestone plan](docs/08_MILESTONE_PLAN.md).
+M2 is the pilot MVP. M3 is the first portfolio/CV MVP and introduces
+product-justified persistence/transaction evidence only after the M2 owner
+go/no-go. Retained interview contracts remain future-scoped according to
+[the milestone plan](docs/08_MILESTONE_PLAN.md).
 
 ## Documentation
 
 Start with:
 
-1. [approved decisions](docs/02_ASSUMPTIONS_AND_DECISIONS.md);
-2. [SRS](docs/03_SRS.md);
-3. [architecture](docs/04_ARCHITECTURE.md);
-4. [data/API contract](docs/05_DATA_AND_API.md);
-5. [milestone plan](docs/08_MILESTONE_PLAN.md);
-6. [readiness gate](docs/10_CHANGELOG_AND_READINESS.md);
-7. [M1 implementation handoff](docs/11_M1_IMPLEMENTATION_HANDOFF.md);
-8. [SDLC and Codex workflow](docs/12_CODEX_WORKFLOW.md).
+1. [product brief](docs/01_PRODUCT_BRIEF.md);
+2. [approved decisions](docs/02_ASSUMPTIONS_AND_DECISIONS.md);
+3. [SRS](docs/03_SRS.md);
+4. [architecture](docs/04_ARCHITECTURE.md) and [ADRs](docs/adr/);
+5. [data/API contract](docs/05_DATA_AND_API.md);
+6. [milestone plan](docs/08_MILESTONE_PLAN.md) and [traceability](docs/09_TRACEABILITY.md);
+7. [readiness gate](docs/10_CHANGELOG_AND_READINESS.md);
+8. [M1 implementation handoff](docs/11_M1_IMPLEMENTATION_HANDOFF.md);
+9. [SDLC and Codex workflow](docs/12_CODEX_WORKFLOW.md); and
+10. [media-rights and provenance contract](MEDIA_NOTICE.md).
 
-The old `CLAUDE_MILESTONE_PROMPT.md` is retained only as planning history.
+The old `CLAUDE_MILESTONE_PROMPT.md` is historical and non-canonical; it must
+not select current work.
 
 ## Privacy and zero-cost rules
 
 - Never persist raw audio.
 - Never log raw CV, JD, answers, report, provider prompts, tokens, or provider payloads.
+- In M2, do not intentionally persist, log, analytics-track, or transmit
+  learner transfer content. UI concealment is not secure browser/OS erasure.
+- Require the media-rights/provenance gate before committing any real human
+  asset; private release records stay outside Git.
 - Keep the complete fake-provider path runnable without API keys.
-- Use only synthetic/anonymised data for a public demo until current provider/hosting terms are reviewed.
+- Use only the deterministic non-person fixture until a real asset is cleared.
 - Public hosting is optional; local Docker is the acceptance environment.
 
 ## Dependency note
@@ -519,4 +539,16 @@ PostgreSQL 18 uses a version-specific `PGDATA` and its Docker volume is intentio
 
 ## CV rule
 
-Do not replace the capstone entry yet. Global-Ready becomes CV-ready only after M7 tests, demo evidence, limitations, and an owner-led code defence are complete.
+Do not replace the capstone entry yet. M2 is the pilot MVP; M3 is the first
+portfolio/CV MVP and must contain product-justified Spring persistence,
+transaction, idempotency, PostgreSQL/Testcontainers, security/privacy, and
+recovery evidence that the owner can explain. Claims remain limited to tested,
+demonstrated facts.
+
+## Next gate
+
+The canonical result is `CANONICAL v0.3 READY; M2 BACKLOG NOT YET APPROVED`.
+After the canonical documentation/workflow PR is manually merged and read
+back, ticket-manager Phase A plus the exact `APPROVE BOARD WRITE` approval is a
+separate prerequisite for M2 product coding. No product source is authorized by
+this README update.

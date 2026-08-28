@@ -1,7 +1,7 @@
 # Global-Ready SDLC and Codex Workflow
 
-Status: Repository-local SDLC baseline
-Last updated: 2026-08-24
+Status: Canonical v0.3 repository workflow
+Last updated: 2026-08-28
 
 This workflow is local, deterministic, and zero-cost. It adds no product
 behavior, hosted service, provider call, or paid API dependency.
@@ -154,6 +154,29 @@ when Project Status is accidentally set to Ready.
 
 ## 8. Issue, branch, and pull-request flow
 
+The required delivery chain is:
+
+```text
+canonical design -> implementation plan -> one ready Issue -> branch -> RED -> GREEN -> REFACTOR -> PR -> human review -> manual merge
+```
+
+For an M2 shadowing Issue, Spring owns only the public exercise
+metadata/content contract and the browser requests approved media/captions
+directly. M2 adds no learner persistence, capture, provider, JPA entity, or
+media-byte transport.
+
+The **Media-rights gate** runs before any real human asset can be committed or
+published. Public Git contains only the non-personal attestation in
+`MEDIA_NOTICE.md`; private participant release records stay outside Git. No
+board mutation occurs without the exact `APPROVE BOARD WRITE` approval, and
+every commit records specific capability, limitation, Issue/decision, and
+verification evidence in each applicable `PROJECT_STATUS.md` ledger.
+
+Auto-merge must never be enabled. Delivery also adds no automatic deployment,
+paid API requirement, `openai/codex-action`, automatic code generation, or
+required Codex review. Codex review may be requested as optional evidence;
+human review and manual merge remain mandatory.
+
 1. Create an Issue with one of the YAML forms in `.github/ISSUE_TEMPLATE/` or
    refine it with `$global-ready-ticket-manager`. Blank Issues are disabled.
 2. Confirm the Issue has exact evidence, requirements, AI Mode, dependencies,
@@ -162,8 +185,8 @@ when Project Status is accidentally set to Ready.
    resolved. Start Codex delivery by supplying exactly one Issue number or URL
    and asking it to use `$global-ready-issue-delivery`.
 4. Branch from current `dev`. Use one branch per Issue, for example
-   `feat/2-draft-session-domain`, `fix/12-expiry-boundary`, or
-   `chore/13-ci-hardening`. Do not push directly to `dev`.
+   `feat/21-shadowing-metadata`, `fix/22-playback-generation`, or
+   `chore/23-content-validation`. Do not push directly to `dev`.
 5. Open one PR using `.github/pull_request_template.md`. Use `Closes #N` when
    merge will fully satisfy the Issue; otherwise describe the partial link
    without closing it.

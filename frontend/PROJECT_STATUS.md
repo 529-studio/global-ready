@@ -1,7 +1,7 @@
 # Frontend Project Status
 
-Status: M1 application shell complete; canonical v0.3 shadowing boundary approved
-Last updated: 2026-08-27
+Status: M0.3 canonical delta in progress; product runtime remains M1
+Last updated: 2026-08-28
 
 ## Current capability
 
@@ -43,6 +43,7 @@ values.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-28 | Aligned effective repository instructions with the M2 shadowing UI and browser-direct-media boundary backed by Spring metadata; frontend runtime remains the M1 shell and no `/practice`, learner state, media, or backlog implementation exists. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 5 instruction alignment |
 | 2026-08-28 | Corrected the empty media registry so no sentinel row can evade the required provenance fields; no real human media, cloud storage, or product code was added, and frontend runtime remains the M1 shell. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 4 fix round 1 / D-039 |
 | 2026-08-28 | Defined the fail-closed media publication and non-personal provenance gate; no real human media, cloud storage, or product code was added, and frontend runtime remains the M1 shell. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / D-034, D-035, D-039 / ADR-0005 |
 | 2026-08-28 | Clarified that M0.3 completes at manual canonical merge plus post-merge readback, while ticket-manager Phase A and exact board approval remain a separate prerequisite for M2 product coding; frontend runtime remains the M1 shell, with no M2 backlog or `/practice` implementation. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 3 fix round 1 |
