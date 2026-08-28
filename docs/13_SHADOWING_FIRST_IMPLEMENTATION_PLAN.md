@@ -1,16 +1,17 @@
 # Shadowing-First Architecture and Canonical Delta Plan
 
-Status: Design sections owner-approved; written consolidation awaiting owner review; non-canonical until the coordinated v0.3 delta is merged
+Status: Owner-approved design input adopted into canonical v0.3; audit and disposition record, not a competing implementation authority
 Design version: v0.3-draft.3
 Date: 2026-08-27
 Audit baseline: `29732f9d3198e3f1a66149051dee0cb552f3f63d`
 Audience: Owner, external auditor, implementation planner, ticket manager, and reviewers
 
 > This document resolves the external audit findings against v0.3-draft.2 and
-> records the owner's architectural decisions. It does not by itself supersede
-> canonical v0.2. Product source work remains blocked until one coordinated
-> canonical v0.3 documentation/workflow change is approved and merged. GitHub
-> backlog changes require their own Phase A dry run and exact
+> records the owner's architectural decisions. Its approved decisions are now
+> incorporated into the canonical v0.3 documents and ADR-0005, which take
+> precedence if wording differs. Product source work remains blocked until the
+> coordinated canonical v0.3 documentation/workflow change is manually merged.
+> GitHub backlog changes require their own Phase A dry run and exact
 > `APPROVE BOARD WRITE` approval.
 
 ## 1. Executive decision

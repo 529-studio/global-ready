@@ -1,7 +1,7 @@
 # Changelog and Implementation Readiness
 
 Status: Canonical v0.3
-Date: 2026-08-27
+Date: 2026-08-28
 
 ## 1. v0.1 -> v0.2 changes
 
@@ -178,3 +178,11 @@ preserved in `docs/11_M1_IMPLEMENTATION_HANDOFF.md`. Later repository evidence
 at audit baseline `29732f9d3198e3f1a66149051dee0cb552f3f63d` records green
 backend, frontend, documentation/contracts, and isolated clean-clone smoke CI.
 No shadowing product behaviour is claimed by that evidence.
+
+## 8. M0.3 delivery evidence
+
+The local Issue #17 branch has completed documentation/workflow checks only.
+It adds no product endpoint, `/practice` route, media asset, cloud setting,
+board write, deployment, or auto-merge configuration. The final owner review
+must read back the manual merge and, separately, the later ticket-manager Phase
+A proposal before any M2 implementation Issue becomes Ready.

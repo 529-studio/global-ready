@@ -1,6 +1,6 @@
 # Backend Project Status
 
-Status: M0.3 canonical delta in progress; product runtime remains M1
+Status: M1 runtime complete; canonical M2 Spring shadowing content-contract boundary ready for backlog planning
 Last updated: 2026-08-28
 
 ## Current capability
@@ -15,14 +15,14 @@ Last updated: 2026-08-28
 
 ## Current delivery boundary
 
-The backend runtime remains at M1. Canonical v0.3 sets the next product boundary
-as a public, read-only Spring shadowing exercise metadata/content-contract API;
-the browser, not Spring or the database, carries media bytes. Issue #17 is
-documentation-only M0.3 work, so that API is not implemented and M0.3 remains
-in progress. No M2 implementation may start until the canonical PR is manually
-merged and ticket-manager Phase A receives the exact `APPROVE BOARD WRITE`
-approval to create implementation-ready M2 Issues. Until then no M2 backlog is
-approved, and interview-first Issue #2 remains stale rather than active work.
+The backend M1 runtime is complete. Canonical v0.3 defines the next boundary as
+a public, read-only Spring shadowing exercise metadata/content-contract API;
+the browser, not Spring or the database, carries media bytes. No M2 endpoint,
+persistence, or media transport exists yet. M2 implementation may start only
+after the canonical PR is manually merged and ticket-manager Phase A receives
+the exact `APPROVE BOARD WRITE` approval to create implementation-ready M2
+Issues. Until then no M2 backlog is approved, and interview-first Issue #2
+remains stale rather than active work.
 
 ## Verification
 
@@ -46,6 +46,7 @@ provider payloads, or environment-file values here.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-28 | Reconciled the M0.3 design record as adopted audit input and set the honest runtime gate: M1 backend is complete, M2 Spring metadata is ready only for backlog planning, and no M2 endpoint, persistence, or media transport exists. | `./scripts/verify.sh fast`; `./scripts/verify.sh full`; `./scripts/verify.sh docs`; `./scripts/verify.sh smoke`; `git diff --check` | Issue #17 / Task 7 |
 | 2026-08-28 | Added M0.3 delivery-contract intake checks for architecture approval, executable RED/GREEN/refactor evidence, media-rights provenance, status-ledger readback, and explicit manual-merge policy; backend runtime remains M1 and no M2 endpoint, persistence, or media transport was added. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 6 |
 | 2026-08-28 | Corrected the current delivery boundary so manual canonical merge and separately approved ticket-manager Phase A are explicit prerequisites for ready M2 Issues; backend runtime remains M1, no M2 backlog/product endpoint exists, and Issue #2 remains stale. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 5 fix round 1 |
 | 2026-08-28 | Aligned effective repository instructions with the M2 Spring metadata/content-contract and browser-direct-media boundary; backend runtime remains M1 and no M2 endpoint, persistence, media transport, or backlog implementation exists. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 5 instruction alignment |

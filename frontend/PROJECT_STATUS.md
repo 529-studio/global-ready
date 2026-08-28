@@ -1,6 +1,6 @@
 # Frontend Project Status
 
-Status: M0.3 canonical delta in progress; product runtime remains M1
+Status: M1 shell complete; canonical M2 shadowing practice boundary ready for backlog planning
 Last updated: 2026-08-28
 
 ## Current capability
@@ -13,14 +13,14 @@ Last updated: 2026-08-28
 
 ## Current delivery boundary
 
-The frontend runtime remains at the M1 shell. Canonical v0.3 sets the next
-product boundary as a `/practice` shadowing pilot backed by Spring metadata and
-browser-direct media. Issue #17 is documentation-only M0.3 work, so the route
-and player are not implemented and M0.3 remains in progress. No M2
-implementation may start until the canonical PR is manually merged and
-ticket-manager Phase A receives the exact `APPROVE BOARD WRITE` approval to
-create implementation-ready M2 Issues. Until then no M2 backlog is approved,
-and frontend-only Issues #9 and #10 remain stale rather than active work.
+The frontend M1 shell is complete. Canonical v0.3 defines the next product
+boundary as a `/practice` shadowing pilot backed by Spring metadata and
+browser-direct media. No M2 route, player, learner state, or media path exists
+yet. M2 implementation may start only after the canonical PR is manually
+merged and ticket-manager Phase A receives the exact `APPROVE BOARD WRITE`
+approval to create implementation-ready M2 Issues. Until then no M2 backlog is
+approved, and frontend-only Issues #9 and #10 remain stale rather than active
+work.
 
 ## Verification
 
@@ -45,6 +45,7 @@ values.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-28 | Reconciled the M0.3 design record as adopted audit input and set the honest runtime gate: M1 frontend shell is complete, M2 `/practice` is ready only for backlog planning, and no M2 route, learner state, or media path exists. | `./scripts/verify.sh fast`; `./scripts/verify.sh full`; `./scripts/verify.sh docs`; `./scripts/verify.sh smoke`; `git diff --check` | Issue #17 / Task 7 |
 | 2026-08-28 | Added M0.3 delivery-contract intake checks for architecture approval, executable RED/GREEN/refactor evidence, media-rights provenance, status-ledger readback, and explicit manual-merge policy; frontend runtime remains the M1 shell and no `/practice`, learner state, or media path was added. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 6 |
 | 2026-08-28 | Corrected the current delivery boundary so manual canonical merge and separately approved ticket-manager Phase A are explicit prerequisites for ready M2 Issues; frontend runtime remains the M1 shell, no M2 backlog or `/practice` exists, and Issues #9/#10 remain stale. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 5 fix round 1 |
 | 2026-08-28 | Aligned effective repository instructions with the M2 shadowing UI and browser-direct-media boundary backed by Spring metadata; frontend runtime remains the M1 shell and no `/practice`, learner state, media, or backlog implementation exists. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 5 instruction alignment |
