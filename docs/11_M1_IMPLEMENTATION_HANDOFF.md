@@ -2,7 +2,7 @@
 
 Status: Scaffold generated; local Docker gate pending  
 Date: 2026-08-24  
-Authority: progress record only; requirements remain in canonical v0.2 documents
+Authority: progress record only; current requirements are in canonical v0.3 documents
 
 ## Scope completed
 
@@ -56,6 +56,9 @@ Then verify:
 
 ## Review before M2
 
+This 2026-08-24 review list is retained as generation history; the addendum
+below supersedes its former M2 boundary.
+
 - Explain why M1 contains no empty domain entities or repositories.
 - Review every dependency and confirm it has a near-term M2/M3 use.
 - Confirm no request body, token, CV, JD, answer, or provider payload is logged.
@@ -64,4 +67,38 @@ Then verify:
 
 ## Next gate
 
-M1 becomes fully accepted when the Docker-backed commands pass and the owner has reviewed the scaffold. Only then open M2: anonymous draft session and domain rules.
+M1 becomes fully accepted when the Docker-backed commands pass and the owner
+has reviewed the scaffold. The current next-delivery boundary is defined by the
+dated addendum below rather than the former anonymous-draft-session plan.
+
+## 2026-08-27 addendum
+
+The tables above preserve the exact limitations of the 2026-08-24 generation
+environment: Docker-backed Testcontainers and Compose semantic validation were
+not run in that environment. Later verification did not rewrite that dated
+fact.
+
+Subsequent repository evidence closed the M1 acceptance gap:
+
+- PR #12 status-ledger evidence records successful backend, frontend, full,
+  and isolated clean-clone smoke verification;
+- the Issue #17 audit baseline
+  `29732f9d3198e3f1a66149051dee0cb552f3f63d` records green backend, frontend,
+  documentation/contracts, and clean-clone smoke CI; and
+- M1 still contains no shadowing, learner, interview, provider, token, report,
+  or other product-domain behaviour.
+
+### M2 — Shadowing pilot MVP
+
+Canonical v0.3 replaces the stale anonymous-draft-session next gate with
+planning for one shadowing exercise: a public read-only Spring metadata/content
+API, browser-direct deterministic media and derived captions, optional
+repetition, complete-pass gating, transient independent transfer, and
+reflection. The backend and database do not carry media bytes.
+
+M2 product coding still waits for the coordinated canonical PR to be manually
+merged and a separately approved, implementation-ready M2 backlog. M0.3 adds no
+endpoint, `/practice` route, dependency, migration, media asset, cloud setting,
+or learner persistence. M3 remains the first portfolio/CV cut line for
+product-justified persistence, transactions, idempotency,
+PostgreSQL/Testcontainers, security/privacy, and recovery evidence.

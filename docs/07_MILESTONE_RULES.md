@@ -1,20 +1,28 @@
 # Milestone Execution Rules
 
-Status: Canonical v0.2  
-Last updated: 2026-08-24
+Status: Canonical v0.3
+Last updated: 2026-08-27
 
 ## 1. Core rules
 
 1. Work one milestone at a time and keep the repository buildable.
 2. Do not implement a later milestone's abstraction “for future use.”
-3. Map each task and acceptance test to requirement IDs.
-4. Implement privacy, error handling, and observability with the feature that needs them.
-5. Keep normal CI independent of Gemini, paid services, and public hosting.
-6. Keep domain/application work human-first unless the owner explicitly asks Codex to implement it.
-7. Provider network calls must remain outside database transactions.
-8. No milestone may introduce audio persistence.
-9. No seventh interview turn may be possible.
-10. Material deviations require a spec delta or ADR before merge.
+3. Map each task and acceptance test to requirement IDs and approved ADRs.
+4. Owner approval precedes every architecture, public-contract, security,
+   privacy, or media-rights change.
+5. Production behaviour records RED -> GREEN -> REFACTOR evidence. Documentation
+   and configuration work uses executable validation when practical.
+6. Every real human asset passes the media-rights gate before it is merged.
+7. Keep normal CI independent of Gemini, paid services, public hosting, and
+   real-media network dependencies; fake providers and deterministic fixtures
+   remain the default.
+8. Keep privacy, error handling, observability, accessibility, and the mandatory
+   text fallback with the feature that needs them. No milestone may introduce
+   learner-audio persistence or a numeric score.
+9. One Issue maps to one branch and one PR. Every commit updates the applicable
+   backend and/or frontend status ledger with exact verification evidence.
+10. Human review and manual merge are mandatory. Auto-merge never runs.
+11. Material deviations require a current canonical delta or ADR before merge.
 
 ## 2. Required milestone shape
 
@@ -50,7 +58,7 @@ A milestone is done only when:
 
 Before accepting a task, ask:
 
-1. Which v0.2 requirement requires it?
+1. Which current canonical requirement or approved ADR requires it?
 2. Does it help the current milestone's demo?
 3. Can the fake-provider path test it?
 4. Does it add a new service, framework, account model, audio pipeline, or long-term data?
@@ -86,15 +94,24 @@ If answers are missing, defer it.
 
 ## 6. Review checkpoints
 
-- **Checkpoint A — M1:** clean scaffold, no domain code.
-- **Checkpoint B — M2:** session aggregate, state/freeze/expiry/access rules.
-- **Checkpoint C — M3:** one complete answer survives provider failure.
-- **Checkpoint D — M4:** six-turn lifecycle and concurrency.
-- **Checkpoint E — M5/M6:** grounded report and verified deletion.
-- **Checkpoint F — M7:** portfolio evidence and owner defence.
+- **Checkpoint A — M1 scaffold:** reproducible foundation and no product domain.
+- **Checkpoint B — M0.3 canonical closure:** documentation/workflow-only delta,
+  owner review, and manual merge; no product source.
+- **Checkpoint C — M2 shadowing pilot:** one browser-direct-media exercise,
+  transient transfer/reflection, deterministic fixture, and owner go/no-go.
+- **Checkpoint D — M3 portfolio/CV:** product-justified Spring persistence,
+  transactions, idempotency, PostgreSQL/Testcontainers, security/privacy, and
+  recovery evidence.
+- **Conditional later checkpoints:** scenario packs, post-shadow STT, adaptive
+  interview, reports, retention/deletion, and portfolio hardening only after a
+  separately approved product/design delta.
 
-Review each checkpoint before starting the next one. Do not generate the whole product in one Codex prompt.
+Review each checkpoint before starting the next one. No M2 product Issue starts
+until the canonical PR is manually merged and its backlog is separately approved.
 
 ## 7. CV rule
 
-Global-Ready may replace the capstone on the CV only after M7 and only with claims demonstrated by code/tests. Do not claim production users, scale, accuracy, or cost savings without evidence.
+Global-Ready may support portfolio/CV claims after M3 only with claims directly
+demonstrated by code, tests, and the owner’s explanation. Do not claim users,
+scale, accuracy, pronunciation quality, learning efficacy, or cost savings
+without evidence.

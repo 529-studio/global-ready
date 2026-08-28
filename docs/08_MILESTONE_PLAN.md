@@ -1,292 +1,82 @@
 # Milestone Plan
 
-Status: Canonical v0.2  
-Last updated: 2026-08-24
+Status: Canonical v0.3
+Last updated: 2026-08-27
 
-No calendar estimate is attached. Finish and review one checkpoint before opening the next.
-
-## M0 — Specification closure
-
-**Objective:** establish one contradiction-free implementation contract.
-
-**Outcome:** canonical v0.2 docs, ADRs, traceability, and readiness checklist.
-
-**Requirements:** all requirements at planning level.
-
-**Tasks**
-
-- Apply approved scope and architecture decisions.
-- Remove WebRTC/audio storage/account/history/scoring assumptions.
-- Define state, TTL, API ownership, idempotency, and provider transaction boundaries.
-- Record deferred work and implementation-time checks.
-
-**Definition of done**
-
-- all MUST requirements map to M1–M7;
-- no unresolved P0 question;
-- no stale v0.1 requirement appears in canonical docs;
-- readiness document states `SPEC READY FOR IMPLEMENTATION`.
-
-**Classification:** `AI-IMPLEMENT` docs, owner approval.
+No calendar estimate is attached. Complete and review each checkpoint before
+opening the next one. Pilot MVP = M2. Portfolio/CV MVP = M3.
 
 ## M1 — Reproducible monorepo scaffold
 
-**Objective:** create a clean-clone development skeleton without implementing domain behaviour.
-
-**Demo:** PostgreSQL starts; backend health and OpenAPI endpoints respond; frontend renders a Global-Ready scaffold page; backend/frontend tests and builds pass independently.
-
-**Requirements:** NFR-021, NFR-040, NFR-041, NFR-043, NFR-044.
-
-**Backend**
-
-- Java 25 Spring Boot Gradle project.
-- Spring MVC, validation, actuator, JPA, Flyway, PostgreSQL, test dependencies.
-- Virtual threads configured.
-- `local` configuration with environment overrides.
-- Health endpoint through Actuator.
-- One context-load test and one Testcontainers database/migration integration test.
-- No empty domain entities or premature repositories.
-
-**Frontend**
-
-- Stable pinned Next.js App Router + TypeScript project.
-- Minimal landing page describing zero-cost local mode.
-- Lint, route-type generation, type-check, and production-build scripts.
-- Environment placeholder for backend base URL.
-
-**Repository/infrastructure**
-
-- Compose PostgreSQL plus optional app services/profile.
-- `.env.example`, `.gitignore`, root README, and common commands.
-- CI workflow for independent backend/frontend checks if the repository is connected to GitHub.
-
-**Privacy/observability**
-
-- correlation-ID and safe structured logging baseline;
-- no request-body logging;
-- secret placeholders only.
-
-**Tests**
-
-- Gradle wrapper test/package;
-- Flyway applies to a disposable PostgreSQL container;
-- frontend lint/type/build;
-- Compose configuration validates.
-
-**Non-goals:** session tables, access token logic, provider adapters, voice UI.
-
-**Definition of done:** clean documented commands pass without Gemini key.
-
-**Classification:** `AI-IMPLEMENT`; owner reviews every dependency and command.
-
-## M2 — Anonymous draft session and domain rules
-
-**Objective:** implement the first meaningful Spring slice without any AI provider.
-
-**Demo:** issue access, create/edit a draft session, prepare it, observe frozen context, reject foreign/expired access, and delete it.
-
-**Requirements:** FR-001–FR-016, FR-020–FR-025, FR-004, FR-006–FR-007, BR-001–BR-004, BR-011–BR-012, NFR-022–NFR-025, NFR-042, NFR-046.
-
-**HUMAN-FIRST backend**
-
-- `InterviewSession` aggregate and `CandidateContext` value object.
-- explicit enum plus central transition methods; no sealed-interface ceremony required;
-- anonymous token generation/hash/binding;
-- draft create/read/context update/prepare/delete use cases;
-- operation-specific session-creation idempotency;
-- injected `Clock` and logical-expiry checks;
-- ProblemDetail mapping;
-- first real Flyway migration and JPA mappings.
-
-**AI-REVIEW**
-
-- state/validation/ownership/expiry edge cases;
-- transaction and constraint review;
-- missing unit/integration tests.
-
-**Frontend**
-
-- setup form and fixed-configuration summary;
-- session token in `sessionStorage`;
-- draft/ready/error screens.
-
-**Tests**
-
-- valid and invalid transitions;
-- context cannot change after `READY`;
-- same/different idempotency payload;
-- token isolation and expiry boundary;
-- cascade manual deletion;
-- no raw context in logs.
-
-**Non-goals:** start, turns, Gemini, report, speech.
-
-**Definition of done:** Checkpoint B review can answer: “Is context genuinely immutable at READY, and can another/expired token access it?”
-
-## M3 — One complete browser/text turn with failure recovery
-
-**Objective:** prove the riskiest end-to-end interaction while preserving the final answer.
-
-**Demo:** start a ready session, hear/read a first fake question, answer via Chrome STT or text, persist it, and receive one next fake question; injected provider failure leaves the answer safe and retry resumes.
-
-**Requirements:** FR-030–FR-034, FR-040–FR-050, FR-060–FR-065, BR-005–BR-006, NFR-001, NFR-003–NFR-005.
-
-**HUMAN-FIRST backend**
-
-- `InterviewTurn`, turn states, and first/next prompt orchestration;
-- `InterviewResponseGateway` interface;
-- two-transaction flow around external call;
-- start/answer idempotency and request fingerprints;
-- next-prompt failure/resume behaviour.
-
-**AI-IMPLEMENT after interface approval**
-
-- deterministic fake gateway;
-- DTO mapping, synthetic fixtures, browser API wrappers.
-
-**Frontend**
-
-- explicit interview reducer;
-- capability detection, permission handling, final/interim distinction;
-- text fallback;
-- speech synthesis and visible prompt;
-- saved-answer/retry UI.
-
-**Manual spike**
-
-- Chrome Vietnamese-accented English/Java vocabulary corpus;
-- record limitations in README; do not block text flow.
-
-**Tests**
-
-- answer commit precedes provider call;
-- provider call observes no active DB transaction;
-- failure preserves answer;
-- same-key retry creates one next turn;
-- foreign/expired/session-state rejection;
-- browser unsupported fallback.
-
-**Non-goals:** Gemini, more than two turns, report.
-
-## M4 — Six-turn lifecycle and optional Gemini interviewer
-
-**Objective:** complete the bounded interview loop and add a real provider without making it required.
-
-**Demo:** fake mode completes six turns and auto-ends; Gemini mode can be exercised manually with an environment key.
-
-**Requirements:** FR-021, FR-026–FR-029, FR-043–FR-050, BR-007, NFR-004, NFR-006.
-
-**HUMAN-FIRST**
-
-- turn sequence/cap rules;
-- end early and cancel unanswered turn;
-- optimistic locking and unique-sequence recovery;
-- bounded transient retry policy;
-- prompt-context construction and size limits.
-
-**Provider**
-
-- one Gemini adapter implementing `InterviewResponseGateway`;
-- explicit `gemini` profile and missing-key startup validation;
-- model ID from configuration, not hard-coded into domain;
-- safe prompt delimiters and prompt version metadata.
-
-**Tests**
-
-- no seventh turn under concurrent submission;
-- early end produces `ENDED` or `ABANDONED` by evidence count;
-- five simultaneous fake sessions do not mix data;
-- adapter fixture tests only in CI;
-- manual Gemini evaluation uses synthetic context.
-
-**Non-goals:** Gemini Live, WebRTC, live-provider CI tests.
-
-## M5 — Grounded report
-
-**Objective:** generate and display a useful report without scores or fabricated evidence.
-
-**Demo:** an ended two-to-six-turn fake session returns Vietnamese feedback, one-to-three priorities, valid turn evidence, and English improved outlines.
-
-**Requirements:** FR-070–FR-079, BR-008–BR-010, NFR-001, NFR-040, NFR-042.
-
-**HUMAN-FIRST**
-
-- report state and generation use case;
-- `ReportGenerationGateway` interface;
-- evidence sufficiency and evidence-ID validator;
-- pending/complete/failed and idempotent retry;
-- report transaction boundary.
-
-**AI-IMPLEMENT after schema approval**
-
-- deterministic fake report fixture;
-- JSON DTO/schema parsing and UI components.
-
-**Gemini**
-
-- extend the one Gemini adapter to report generation;
-- strict structured output when supported;
-- invalid output becomes `FAILED`; add a repair call only after measured need.
-
-**Tests**
-
-- report blocked for DRAFT/READY/ACTIVE/ABANDONED/expired;
-- one report per session;
-- one-to-three priorities;
-- invalid/foreign evidence IDs rejected;
-- no score or sample-answer field;
-- provider failure does not change session `ENDED`.
-
-## M6 — Retention, deletion, and privacy hardening
-
-**Objective:** make the 24-hour policy observable and testable.
-
-**Demo:** an injected clock expires a session immediately; startup/scheduled cleanup removes all rows; repeated cleanup is safe.
-
-**Requirements:** FR-004–FR-007, FR-090–FR-094, BR-012, NFR-021–NFR-026, NFR-046.
-
-**Tasks**
-
-- scheduled and startup cleanup in bounded batches;
-- cascade and access-grant deletion integration tests;
-- query/application audit for expiry enforcement;
-- structured cleanup metrics;
-- token/log/redaction tests;
-- public-only in-memory rate limiting if a public deployment is actually enabled.
-
-**Non-goals:** always-on cleanup guarantee, Redis/distributed scheduler, encryption-platform work for local PostgreSQL.
-
-## M7 — Portfolio hardening and defence
-
-**Objective:** make the project reproducible, honest, and interview-defensible.
-
-**Demo:** clean-clone fake E2E plus an owner-led architecture/code walkthrough.
-
-**Requirements:** NFR-020 when publicly deployed, NFR-041–NFR-045 and all acceptance scenarios.
-
-**Tasks**
-
-- text-fallback E2E for the fake path;
-- OpenAPI drift check;
-- dependency/security scan;
-- README architecture and sequence diagrams;
-- synthetic screenshots/demo recording;
-- manual Gemini and Chrome evaluation notes;
-- limitations and zero-cost deployment notes;
-- CV bullets backed by implemented facts;
-- owner defence questions covering JVM/Spring/JPA/transactions/concurrency/security.
-
-**Definition of done**
-
-- AS-01 through AS-08 pass or have documented manual evidence;
-- clean clone requires no API key;
-- owner can implement/explain a small change without AI;
-- only then may the project replace capstone wording on the CV.
-
-## MVP cut line
-
-If time/quota is constrained, keep M1–M3 and fake-provider text flow first. Chrome STT/TTS, Gemini, public hosting, rate limiting, UI polish, and report repair calls may be delayed without invalidating the backend learning checkpoint. A CV replacement still requires the completed M7 evidence.
-
-## First implementation checkpoint
-
-Start with M1 only as AI-generated mechanical scaffold. Then stop for owner review before human-first M2. Do not generate M2 domain logic in the same unattended pass.
+**Status:** completed historical foundation evidence.
+
+M1 established the Java 25/Spring Boot and Next.js scaffold, PostgreSQL/Flyway
+and Testcontainers wiring, health/OpenAPI, safe structured logging, pinned
+tooling, Compose, and independent checks. It intentionally implemented no
+learner, media, shadowing, interview, provider, token, or report product
+behaviour.
+
+## M0.3 — Shadowing canonical closure
+
+**Objective:** merge one owner-reviewed documentation/workflow delta that makes
+the shadowing-first product boundary canonical.
+
+**Scope:** product brief, SRS, architecture, API/data contract, decisions,
+ADR-0005, milestones, RTM, readiness, handoff, status ledgers, and executable
+documentation checks. M0.3 contains no product source, dependency, media,
+cloud, CI, hook, or board mutation.
+
+**Definition of done:** the canonical PR is manually merged; the status ledgers
+and documentation checks agree; the ticket manager has then prepared and
+received approval for a separate M2 backlog. Until both gates occur, product
+coding does not start.
+
+## M2 — Shadowing pilot MVP
+
+**Objective:** validate one active workplace/interview-English exercise:
+guided imitation -> optional repetition -> independent transfer -> reflection.
+
+**Scope:** one public read-only Spring exercise metadata/content-contract API;
+one deterministic reference-media and derived-WebVTT fixture loaded directly by
+the browser; explicit start, accessible captions and controls, optional
+repetition, generation-based complete-pass gating, transient self-attested
+transfer text, source concealment in the product UI and accessibility tree, and
+reflection. The backend and database never carry media bytes and M2 adds no
+learner persistence, account, report, or speech verification.
+
+**Evidence:** deterministic backend/content validation; Vitest and React Testing
+Library state/UI coverage; one focused Playwright Chromium flow; direct-media
+transport evidence; rights/notice validation; and owner M2 go/no-go evidence
+for activation difficulty, confidence before/after practice, four-part transfer
+shape, confusing controls/timing/instructions, and whether the flow feels
+active rather than passive.
+
+**Non-goals:** STT, accounts, progress, reports, scenario packs, storage-provider
+selection, deployment, real human media without the media-rights gate, adaptive
+interview, persistence, transactions, and idempotency.
+
+## M3 — Spring portfolio/CV MVP
+
+**Objective:** add product-justified Spring persistence and reliability evidence
+after the M2 pilot and its owner decision.
+
+**Scope:** only where the approved product outcome needs them, introduce Spring
+persistence, transactions, idempotency, PostgreSQL/Testcontainers,
+security/privacy controls, and recovery evidence. Do not add JPA merely to
+demonstrate JPA. M3 is the first cut line for meaningful portfolio/CV claims.
+
+## Conditional later milestones
+
+Scenario packs, post-shadow STT, adaptive interview, reports, retention and
+deletion, public deployment, provider integration, and portfolio hardening are
+conditional later work. Each needs its own approved requirement/design delta,
+backlog Issue, evidence, and human review; retained v0.2 interview work is
+future-scoped and is not M2 evidence.
+
+## Global constraints
+
+The no-score rule, mandatory text fallback, fake-provider CI default,
+app-controlled privacy boundary, direct-media boundary, no learner-audio
+persistence, and zero-cost local clean-clone operation apply throughout. A
+formative M2 pilot does not prove learning speed, retention, pronunciation
+quality, or population-level effectiveness.

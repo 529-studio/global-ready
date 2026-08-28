@@ -130,6 +130,26 @@ requireMarkers("docs/09_TRACEABILITY.md", [
   "NFR-050–NFR-054",
   "AS-09–AS-14",
 ]);
+requireMarkers("docs/07_MILESTONE_RULES.md", [
+  "Status: Canonical v0.3",
+  "RED -> GREEN -> REFACTOR",
+  "media-rights gate",
+  "manual merge",
+]);
+requireMarkers("docs/08_MILESTONE_PLAN.md", [
+  "## M0.3 — Shadowing canonical closure",
+  "## M2 — Shadowing pilot MVP",
+  "## M3 — Spring portfolio/CV MVP",
+  "M2 go/no-go",
+]);
+requireMarkers("docs/10_CHANGELOG_AND_READINESS.md", [
+  "v0.2 -> v0.3",
+  "CANONICAL v0.3 READY; M2 BACKLOG NOT YET APPROVED",
+]);
+requireMarkers("docs/11_M1_IMPLEMENTATION_HANDOFF.md", [
+  "2026-08-27 addendum",
+  "M2 — Shadowing pilot MVP",
+]);
 
 function gitOutput(args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();

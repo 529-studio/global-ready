@@ -3,10 +3,11 @@
 Status: Canonical v0.3
 Last updated: 2026-08-27
 
+The delivery order is M1 historical scaffold -> M0.3 canonical closure -> M2
+shadowing pilot MVP -> M3 Spring portfolio/CV MVP -> conditional later work.
 The current runtime remains M1. M0.3 canonicalises the planning contract; M2
 implements the shadowing pilot only through separately approved Issues. The
-retained adaptive interview requirements remain M3 or conditional later work
-and are never M2 evidence.
+retained adaptive interview requirements are never M2 evidence.
 
 Reviewer modes mean:
 
@@ -64,8 +65,10 @@ Reviewer modes mean:
 ## 5. Retained future adaptive interview contract
 
 These mappings preserve v0.2 history without reporting it implemented. `M3+`
-means the M3 portfolio gate or a later milestone selected by a separately
-approved product/design delta. No row below maps to M2.
+is not a separate milestone: it means M3 only when the M2 go/no-go and a
+separately approved product/design delta justify that persisted capability;
+otherwise it means conditional later work after M3. No row below maps to M2 or
+authorises product work without an approved Issue.
 
 ### 5.1 Functional requirements
 
