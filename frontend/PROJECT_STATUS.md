@@ -45,6 +45,7 @@ values.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-28 | Added M0.3 delivery-contract intake checks for architecture approval, executable RED/GREEN/refactor evidence, media-rights provenance, status-ledger readback, and explicit manual-merge policy; frontend runtime remains the M1 shell and no `/practice`, learner state, or media path was added. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 6 |
 | 2026-08-28 | Corrected the current delivery boundary so manual canonical merge and separately approved ticket-manager Phase A are explicit prerequisites for ready M2 Issues; frontend runtime remains the M1 shell, no M2 backlog or `/practice` exists, and Issues #9/#10 remain stale. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 5 fix round 1 |
 | 2026-08-28 | Aligned effective repository instructions with the M2 shadowing UI and browser-direct-media boundary backed by Spring metadata; frontend runtime remains the M1 shell and no `/practice`, learner state, media, or backlog implementation exists. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 5 instruction alignment |
 | 2026-08-28 | Corrected the empty media registry so no sentinel row can evade the required provenance fields; no real human media, cloud storage, or product code was added, and frontend runtime remains the M1 shell. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 4 fix round 1 / D-039 |

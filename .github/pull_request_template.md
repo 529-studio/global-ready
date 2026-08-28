@@ -35,6 +35,13 @@ Closes #
 
 <!-- Do not commit a deliberate failing test state or paste sensitive failure output. Documentation/media/config-only changes may use a failing validator or observable check instead of a meaningless unit test. -->
 
+## Media rights and content provenance
+
+- Media/content assets changed, or justified none:
+- `MEDIA_NOTICE.md` asset/release-record entry:
+- MP4/manifest/WebVTT/script SHA-256 readback:
+- [ ] No private release, participant identity, credential, or unapproved asset is in Git or artifacts.
+
 ## Contract and data impact
 
 - API/request/response/ProblemDetail impact:
@@ -80,4 +87,6 @@ Closes #
 
 - [ ] One issue, one branch, no unrelated diff.
 - [ ] No unapproved dependency, auto-merge, auto-deploy, paid API action, or secret.
+- [ ] Auto-merge is disabled; merge remains an explicit human action.
+- [ ] Browser/backend/database media-byte boundary remains unchanged, or an owner-approved ADR is linked.
 - [ ] Acceptance criteria and issue-specific Definition of Done were read back against this diff.

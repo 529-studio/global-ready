@@ -429,6 +429,9 @@ const requiredIssueFormMarkers = [
   "id: ai_mode",
   "id: non_goals",
   "id: risks",
+  "id: architecture_decision",
+  "id: tdd_evidence",
+  "id: media_rights",
 ];
 for (const form of issueForms) {
   const formPath = path.join(root, ".github/ISSUE_TEMPLATE", form);
@@ -464,9 +467,23 @@ if (fs.existsSync(pullRequestTemplatePath)) {
     "Human review gate",
     "Risks and recovery",
     "Unverified items",
+    "Media rights and content provenance",
+    "RED — test/check command and intended failure reason",
+    "Auto-merge is disabled",
   ];
   for (const marker of requiredPrMarkers) {
     if (!content.includes(marker)) errors.push(`PR template is missing required marker: ${marker}`);
+  }
+}
+
+for (const skill of expectedSkills) {
+  const skillPath = path.join(skillsRoot, skill, "SKILL.md");
+  if (!fs.existsSync(skillPath)) continue;
+  const content = fs.readFileSync(skillPath, "utf8");
+  for (const marker of ["RED -> GREEN -> REFACTOR", "PROJECT_STATUS.md", "media-rights", "Auto-merge"]) {
+    if (!content.includes(marker)) {
+      errors.push(`${relative(skillPath)} is missing delivery-contract marker: ${marker}`);
+    }
   }
 }
 
@@ -503,6 +520,9 @@ if (fs.existsSync(workflowPath)) {
     "OPENAI_API_KEY",
     "CODEX_API_KEY",
     "secrets.",
+    "auto-merge",
+    "automerge",
+    "gh pr merge --auto",
   ];
   for (const marker of forbiddenWorkflowMarkers) {
     if (workflow.includes(marker)) errors.push(`CI workflow contains forbidden zero-cost/security marker: ${marker}`);

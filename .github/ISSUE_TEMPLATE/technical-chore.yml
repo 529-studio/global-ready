@@ -34,6 +34,30 @@ body:
       required: true
 
   - type: textarea
+    id: architecture_decision
+    attributes:
+      label: Architecture decision and approval
+      description: Cite the canonical boundary/ADR and owner approval, or prove that no architecture/public-contract/security/privacy decision changes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tdd_evidence
+    attributes:
+      label: RED, GREEN, and refactor evidence plan
+      description: Name the smallest failing test/check, intended failure reason, passing command, and refactor verification. Documentation/config work uses an executable validator when practical.
+    validations:
+      required: true
+
+  - type: textarea
+    id: media_rights
+    attributes:
+      label: Media rights and content provenance
+      description: Cite the MEDIA_NOTICE asset/release/hash evidence, or explain why no media/content asset is added or changed.
+    validations:
+      required: true
+
+  - type: textarea
     id: acceptance
     attributes:
       label: Acceptance criteria
