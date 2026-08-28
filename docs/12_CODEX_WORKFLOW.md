@@ -1,7 +1,7 @@
 # Global-Ready SDLC and Codex Workflow
 
-Status: Repository-local SDLC baseline
-Last updated: 2026-08-24
+Status: Canonical v0.3 repository workflow
+Last updated: 2026-08-28
 
 This workflow is local, deterministic, and zero-cost. It adds no product
 behavior, hosted service, provider call, or paid API dependency.
@@ -154,6 +154,29 @@ when Project Status is accidentally set to Ready.
 
 ## 8. Issue, branch, and pull-request flow
 
+The required delivery chain is:
+
+```text
+canonical design -> implementation plan -> one ready Issue -> branch -> RED -> GREEN -> REFACTOR -> PR -> human review -> manual merge
+```
+
+For an M2 shadowing Issue, Spring owns only the public exercise
+metadata/content contract and the browser requests approved media/captions
+directly. M2 adds no learner persistence, capture, provider, JPA entity, or
+media-byte transport.
+
+The **Media-rights gate** runs before any real human asset can be committed or
+published. Public Git contains only the non-personal attestation in
+`MEDIA_NOTICE.md`; private participant release records stay outside Git. No
+board mutation occurs without the exact `APPROVE BOARD WRITE` approval, and
+every commit records specific capability, limitation, Issue/decision, and
+verification evidence in each applicable `PROJECT_STATUS.md` ledger.
+
+Auto-merge must never be enabled. Delivery also adds no automatic deployment,
+paid API requirement, `openai/codex-action`, automatic code generation, or
+required Codex review. Codex review may be requested as optional evidence;
+human review and manual merge remain mandatory.
+
 1. Create an Issue with one of the YAML forms in `.github/ISSUE_TEMPLATE/` or
    refine it with `$global-ready-ticket-manager`. Blank Issues are disabled.
 2. Confirm the Issue has exact evidence, requirements, AI Mode, dependencies,
@@ -162,8 +185,8 @@ when Project Status is accidentally set to Ready.
    resolved. Start Codex delivery by supplying exactly one Issue number or URL
    and asking it to use `$global-ready-issue-delivery`.
 4. Branch from current `dev`. Use one branch per Issue, for example
-   `feat/2-draft-session-domain`, `fix/12-expiry-boundary`, or
-   `chore/13-ci-hardening`. Do not push directly to `dev`.
+   `feat/21-shadowing-metadata`, `fix/22-playback-generation`, or
+   `chore/23-content-validation`. Do not push directly to `dev`.
 5. Open one PR using `.github/pull_request_template.md`. Use `Closes #N` when
    merge will fully satisfy the Issue; otherwise describe the partial link
    without closing it.
@@ -239,6 +262,49 @@ rename or delete any existing field. The current `Backlog`, `Ready`,
   tokens, expiry, migrations, and provider interfaces.
 - `AI-REVIEW`: Codex inspects evidence and reports findings; it does not fold
   opportunistic fixes into a review Issue.
+
+### Architecture direction and approval
+
+The human owner is the final product owner and technical architect. The owner
+accepts canonical scope, architectural boundaries, ADRs, aggregate/state and
+transaction models, public API/data contracts, dependencies, security/privacy
+trade-offs, and recovery strategy. HUMAN-FIRST is an approval boundary, not a
+delegation of architectural authority to an AI agent.
+
+Codex acts as an architecture analyst and delivery assistant. It reads the
+canonical sources and current implementation, identifies conflicts, proposes
+options with evidence and recovery implications, and implements only the
+owner-approved direction. An implementer must stop and raise an exact source or
+ADR conflict instead of introducing a new abstraction, dependency, datastore,
+provider, service boundary, or migration silently. The reviewer checks both
+Issue acceptance and conformance with the approved architecture.
+
+### Test-driven development contract
+
+Behavioral development follows RED -> GREEN -> REFACTOR:
+
+1. Translate one acceptance behavior or reproduced defect into the smallest
+   test at the lowest useful level.
+2. Run it and confirm it fails for the intended missing behavior, not because
+   the fixture, environment, or unrelated code is broken.
+3. Add the minimum production change that makes the new test and relevant
+   affected suite pass.
+4. Refactor names, boundaries, and duplication only while the tests remain
+   green.
+5. Run issue-specific checks, then the required repository harness modes.
+
+The deliberate RED state is evidence, not a commit. A bug fix begins with a
+reproduction test. Domain rules and pure reducers prefer unit tests; HTTP/UI
+contracts use slice or contract tests; PostgreSQL/Flyway/transaction behavior
+uses integration tests. Browser media, microphone, speech, accessibility,
+provider, and clean-clone behavior also retain documented manual or smoke
+evidence when deterministic unit tests cannot prove the real boundary.
+
+Documentation, workflow, media, and configuration-only Issues define a
+failing validator, drift check, or observable verification before the change
+where practical. They must not add a meaningless test solely to satisfy a TDD
+label. PR evidence records the RED command/failure reason, GREEN command/result,
+and any refactor; it never commits a deliberate failure or sensitive output.
 
 If the repository is connected to Codex cloud, a maintainer may request an
 additional review by commenting `@codex review` on a PR. That review is

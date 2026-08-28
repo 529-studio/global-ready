@@ -1,294 +1,253 @@
 # Architecture
 
-Status: Canonical v0.2  
-Last updated: 2026-08-24
+Status: Canonical v0.3
+Last updated: 2026-08-27
 
-## 1. Architectural goals
+## 1. Architectural goals and milestone boundary
 
-- run locally at zero monetary cost;
-- provide a complete deterministic path without Gemini;
-- keep Java/Spring domain behaviour visible and explainable;
-- preserve answers across external-provider failures;
-- isolate provider-specific code;
-- make privacy and 24-hour expiry structural;
-- avoid infrastructure unrelated to a one-developer portfolio project.
+- run locally at zero monetary cost with deterministic fixtures;
+- make M2 one Spring-backed shadowing pilot with browser-direct media;
+- keep exercise content, WebVTT, timing, and integrity mechanically aligned;
+- keep learner transfer state transient and privacy claims app-controlled;
+- preserve the modular monolith and independent frontend/backend builds;
+- retain the approved interview architecture for M3+ without reporting it as
+  implemented or assigning it to M2.
 
-## 2. System context
+The current runtime is the M1 scaffold. This document plans M2; it does not
+claim that the shadowing endpoint, player, content adapter, or tests exist.
+`ADR-0005` is the durable authority for the M2 content and media boundary.
+
+## 2. M2 system context
 
 ```text
 Desktop Chrome
-├── Next.js UI
-├── SpeechRecognition / webkitSpeechRecognition
-├── speechSynthesis
-├── text fallback
-└── HTTPS/JSON
-        |
-        v
-Spring Boot modular monolith
-├── anonymous access and authorisation
-├── interview session aggregate
-├── turn orchestration
-├── report orchestration
-├── retention cleanup
-├── fake provider adapters (default)
-└── Gemini text adapter (opt-in)
-        |
-        +---- PostgreSQL
-        |
-        +---- Gemini text API (only in gemini profile)
+├── Next.js /practice UI
+├── API adapter ── GET public exercise metadata ──> Spring Boot modular monolith
+│                                                    └── com.globalready.shadowing
+├── playback state machine
+└── media adapter + <video>/<track>
+      └── direct media/caption GET/HEAD/range ─────> deterministic local/static media origin
+                                                     or separately approved public media origin
 ```
 
-There is no backend audio path, WebRTC connection, WebSocket, audio object store, or realtime voice-provider credential.
-
-Chrome/browser infrastructure may process microphone audio for speech recognition. The application receives only text selected as final by the client and does not claim that browser speech processing is local or private.
+Spring returns public exercise metadata and content fields. The browser, not
+Spring or PostgreSQL, requests MP4 and WebVTT bytes directly from the local
+fixture origin or a separately approved future public origin. M2 has no
+learner identity, account, anonymous token, learner persistence, STT, AI
+provider, report, media upload, media proxy, or media database table.
 
 ## 3. Technology baseline
 
 | Area | Decision |
 |---|---|
-| Repository | Monorepo |
-| Backend | Java 25, Spring Boot, Gradle Wrapper |
-| HTTP | Spring MVC with virtual threads enabled |
-| Persistence | Spring Data JPA, PostgreSQL |
-| Migrations | Flyway |
-| API errors | Spring `ProblemDetail` |
-| Contract | Backend OpenAPI |
-| Frontend | Pinned stable Next.js, TypeScript, App Router |
-| Browser voice | Chrome Speech Recognition and Speech Synthesis APIs |
-| Provider HTTP | Imperative client or provider SDK inside adapter; bounded timeouts |
-| Tests | JUnit 5, AssertJ, Testcontainers, frontend unit tests, browser E2E later |
-| Local orchestration | Docker Compose |
+| Repository | Existing monorepo; independently buildable backend/frontend |
+| Backend | Java 25, Spring Boot, Spring MVC, modular monolith |
+| M2 persistence | None; existing JPA/Flyway/PostgreSQL scaffold is unchanged |
+| API errors | Spring `ProblemDetail` with correlation ID |
+| Frontend | Pinned Next.js, React, TypeScript, App Router |
+| Media timing | `HTMLMediaElement` clock and derived WebVTT cues |
+| M2 tests | JUnit/MockMvc, Vitest, React Testing Library, focused Playwright Chromium |
+| Local orchestration | Existing Docker Compose and repository verification harness |
 
-Exact versions are recorded by build files at scaffold time. Java 25 is not silently downgraded.
+Exact production symbols, DTO/class names, reducer representation, player
+adapter, codec profile, and generator language remain Issue-level choices.
 
-## 4. Monorepo layout
+## 4. Spring shadowing boundary
 
-```text
-global-ready/
-├── backend/
-│   ├── gradle/
-│   ├── gradlew
-│   ├── build.gradle
-│   └── src/
-├── frontend/
-│   ├── package.json
-│   ├── package-lock.json
-│   └── src/
-├── docs/
-│   └── adr/
-├── compose.yaml
-├── .env.example
-└── README.md
-```
-
-No Nx or Turborepo is required. Each app owns its build and can deploy independently.
-
-## 5. Backend boundaries
-
-Use package-by-feature under `com.globalready`:
+M2 adds `com.globalready.shadowing` inside the existing modular monolith:
 
 ```text
-com.globalready
-├── access
-│   ├── api
-│   ├── application
-│   └── infrastructure
-├── interview
-│   ├── api
-│   ├── application
-│   ├── domain
-│   └── infrastructure
-├── report
-│   ├── application
-│   ├── domain
-│   └── infrastructure
-├── provider
-│   ├── fake
-│   └── gemini
-├── retention
-└── shared
-    ├── api
-    ├── clock
-    └── observability
+com.globalready.shadowing
+├── api                 # public HTTP contract and ProblemDetail mapping
+├── application-domain  # read/validate available exercise contract
+└── content-adapter     # versioned manifest and configured public references
 ```
 
-Rules:
+The names above describe responsibilities, not required Java symbols. The
+boundary:
 
-- controllers call application use cases, never repositories directly;
-- the interview domain owns the aggregate and state transitions;
-- JPA mappings and provider SDK types do not cross public API boundaries;
-- `shared` contains only cross-cutting primitives, not miscellaneous business logic;
-- no empty architectural layer is created solely to satisfy a diagram;
-- asynchronous infrastructure is not introduced for MVP.
+- loads one versioned manifest and validates it before exposure;
+- returns public exercise metadata, ordered cues, transfer/reflection fields,
+  media references, and rights/integrity status;
+- rejects unknown/inactive content with correlated `404
+  application/problem+json`;
+- fails closed on an invalid manifest instead of serving a partial contract;
+- does not depend on JPA, Flyway, provider ports, learner identity, or media
+  byte transport in M2.
 
-## 6. Domain shape
+## 5. Manifest and WebVTT authority
 
-`InterviewSession` is the aggregate root:
+One machine-readable manifest is the exercise source of truth. It owns stable
+exercise/cue IDs, version, title, target role, ordered cue timing and speaker,
+text, Vietnamese intent, key chunks, transfer prompt, four-part checklist,
+expected duration, asset version/hash, and non-personal rights metadata.
+
+WebVTT is derived from the manifest. Content validation proves a one-to-one
+mapping across cue identity, order, speaker, text, start/end timing, expected
+duration, version, and integrity evidence. Duplicate, missing, reordered,
+overlapping, unsupported, empty, mismatched, or uncovered human-media content
+fails closed. No second hand-edited script or caption source is authoritative.
+
+## 6. Media delivery boundary
+
+- Spring response JSON contains media and caption references but no bytes.
+- The browser fetches those references directly.
+- The deterministic repository fixture is the clean-clone and CI path.
+- M2 selects no R2, GCS, Drive, CDN, object store, or hosted media service.
+- The backend never uploads, stores, proxies, or streams media bytes.
+- PostgreSQL never stores video, image, caption, or audio bytes.
+
+A later public media origin requires a separate owner-approved decision and
+must preserve the metadata-only Spring boundary unless an ADR changes it.
+
+## 7. Frontend boundaries
+
+The planned `/practice` feature has focused responsibilities:
+
+- **API adapter:** fetches and validates the Spring response boundary;
+- **playback state machine:** owns generation identity and valid transitions;
+- **media adapter:** translates native media/track events without creating a
+  second clock;
+- **guided view:** identifies active speaker/cue and exposes playback controls;
+- **transfer view:** removes source/reveal content and holds learner input only
+  in route-owned memory;
+- **reflection view:** restores source content and the four-part checklist.
+
+The UI uses explicit data/events so pure playback behavior is testable without
+a browser, while one focused browser flow proves the integrated boundary.
+
+## 8. Playback sequence and recovery
 
 ```text
-InterviewSession
-├── CandidateContext (owned immutable-after-READY value object)
-├── InterviewTurn[0..6]
-└── InterviewReport[0..1]
-```
-
-An `AnonymousAccessGrant` is security infrastructure, not a reusable candidate identity or domain profile. It is unbound when issued and binds to exactly one session on idempotent session creation.
-
-The persisted transcript is derived from ordered answered turns. A separate transcript-segment entity is intentionally omitted because interim browser text and transcript correction are out of scope.
-
-## 7. Provider ports and profiles
-
-Only two domain-oriented ports exist:
-
-```java
-interface InterviewResponseGateway {
-    InterviewerPrompt generateNextPrompt(InterviewPromptContext context);
-}
-
-interface ReportGenerationGateway {
-    GeneratedReport generateReport(ReportPromptContext context);
-}
-```
-
-The signatures above are conceptual; exact Java records are human-first M3/M5 work.
-
-Implementations:
-
-- `fake` profile, enabled by default: deterministic responses suitable for clean clone, CI, and E2E;
-- `gemini` profile, explicitly enabled: one adapter implementing both ports and reading its API key only from environment configuration.
-
-Provider input builders:
-
-- delimit CV, JD, and answers as untrusted data;
-- enforce input-size bounds;
-- include only required ordered turns;
-- carry a prompt version;
-- require structured evidence references for reports.
-
-## 8. Critical sequences and transaction boundaries
-
-### 8.1 Anonymous access and draft session
-
-1. Browser requests an anonymous access grant.
-2. Backend generates a cryptographically secure token, stores only its hash, and returns raw token once.
-3. Browser keeps the token in `sessionStorage`, not a URL.
-4. Browser creates a draft session with its access token and a session-creation idempotency key.
-5. Backend binds the grant to the new session in one local transaction.
-
-### 8.2 Prepare and start
-
-1. Backend validates editable context in `DRAFT`.
-2. One transaction freezes context and moves the session to `READY`.
-3. Start request records an operation-specific key.
-4. Backend moves to `ACTIVE` in a short transaction.
-5. Backend calls `InterviewResponseGateway` outside the transaction for the first prompt.
-6. A second short transaction stores turn 1.
-7. If generation fails, the session remains `ACTIVE` and the same start operation can resume without a duplicate first turn.
-
-### 8.3 Submit final answer and obtain next prompt
-
-```text
-Request: final text + input source + answer idempotency key
+reset(source, generation N)
         |
         v
-TX 1: authorise, validate, save answer, mark next-prompt PENDING, commit
+start from beginning
+        |
+        +-- forward seek / reset / source replace / unmount / fatal error
+        |       -> invalidate generation N; transfer remains locked
+        |
+        +-- pause / buffering / backward seek / supported rate change
+        |       -> generation N remains eligible
         |
         v
-External call: InterviewResponseGateway (no DB transaction)
+native ended(generation N)
         |
-        +-- success --> TX 2: create exactly one next turn, mark COMPLETE
-        |
-        +-- failure --> TX 2: mark FAILED; answer remains saved
+        +-- stale generation -> ignore
+        +-- current + started + no forward seek -> unlock transfer
 ```
 
-If the answer is the sixth, TX 1 ends the session and no provider call occurs. A retry of a failed provider stage reuses the saved answer and must not insert a duplicate turn. If the candidate ends or the session expires while the provider call is in flight, TX 2 discards the returned output, marks generation `CANCELLED` when the row remains accessible, and never reopens the session.
+Completion means only that the system observed one complete reference
+playback. It does not verify speaking, pronunciation, learning, or attention.
+Retry creates a new generation, keeps transfer locked, and makes callbacks
+from the failed generation stale.
 
-### 8.4 End and report
+The media clock and active WebVTT cue are the only timing authority. Audible
+playback begins only after explicit learner action. Loading, play-promise,
+caption, codec, and network failures produce truthful retry or fatal guidance;
+invalid content never renders partially.
 
-1. End command moves `ACTIVE` to `ENDED` or `ABANDONED` using answered-turn count.
-2. Report request checks `ENDED`, evidence threshold, token ownership, expiry, and idempotency.
-3. TX 1 creates/updates the report as `PENDING` and commits.
-4. Backend calls `ReportGenerationGateway` outside a transaction.
-5. Output is schema-validated, including evidence IDs.
-6. TX 2 stores `COMPLETE` output or `FAILED` metadata.
-7. Session remains `ENDED` in both cases.
+## 9. Privacy and UI concealment threat boundary
 
-## 9. Concurrency and consistency
+### 9.1 Application-controlled guarantees
 
-- Use optimistic versioning on `InterviewSession` and `InterviewReport`.
-- Protect sequence uniqueness with a database constraint on `(session_id, sequence_number)`.
-- Protect one report with a unique `session_id`.
-- Store operation-specific idempotency-key hashes and request fingerprints on the affected resource.
-- Same key and same fingerprint returns or resumes the existing operation.
-- Same key and different fingerprint returns `409`.
-- A different key for an already completed single-use operation returns `409`.
-- Use virtual threads for blocking request work; they improve concurrency while waiting but do not reduce provider latency.
-- Never use `parallelStream()` in request/provider paths.
+M2 does not intentionally persist, log, analytics-track, or transmit learner
+transfer content. It does not put that content in storage, cookies, URLs,
+query strings, logs, console output, telemetry, provider payloads, form
+navigation, fetch/XHR/beacon/WebSocket traffic, backend state, or files.
+Transient text lives in route-owned application memory and is cleared on reset
+or teardown. M2 does not capture learner audio.
 
-## 10. Expiry and deletion
+### 9.2 UI-only concealment
 
-`InterviewSession.expiresAt` is the only content-retention clock and equals `createdAt + 24h`.
+During transfer, transcript, cue text, key chunks, and product reveal controls
+are absent from the rendered product UI and product accessibility tree. Public
+API/VTT content can remain visible through caches, developer tools, or a
+modified client. This is UI concealment, not authentication, anti-cheat, DRM,
+content security, or secure erasure.
 
-Every repository query or application authorisation check must include logical expiry. The effective state becomes `EXPIRED` when `Clock.instant() >= expiresAt`, even before cleanup changes or deletes a row.
+The application cannot control browser history/form restoration, bfcache,
+crash recovery, IMEs, spellcheck services, extensions, accessibility software,
+the operating system, screenshots, or modified clients. Product language must
+not promise control outside the application boundary.
 
-Cleanup:
+## 10. Verification levels
 
-1. runs once after application startup and on a schedule;
-2. selects expired session IDs in bounded batches;
-3. deletes aggregates and bound access grants by cascade/explicit batch;
-4. is idempotent;
-5. records counts and duration without content.
-
-When the application is stopped, physical deletion cannot execute. This limitation is documented; no strict wall-clock purge claim is made.
-
-## 11. Security boundaries
-
-- bearer access token is accepted only in the `Authorization` header;
-- token hashes are compared server-side and access-grant/session binding is verified;
-- token, raw request content, provider prompts, and provider responses are excluded from logs;
-- Gemini key and database password are environment-only;
-- expired or foreign resources return a non-enumerating not-found/denied response;
-- CORS is restricted to configured frontend origins;
-- input sizes and provider output schemas are validated;
-- browser data storage contains access metadata only, not CV/JD/transcript/report content;
-- public deployment requires rate limiting, but local mode does not add Redis or distributed limits.
-
-## 12. Observability
-
-Minimum structured fields:
-
-- correlation ID;
-- pseudonymous session/turn/report ID;
-- operation and state transition;
-- duration;
-- provider/profile/model identifier;
-- outcome, retryability, and error category;
-- request/response character count, never text;
-- cleanup selected/deleted counts.
-
-## 13. Testing strategy
-
-| Level | Coverage |
+| Level | Planned M2 evidence |
 |---|---|
-| Unit | state transitions, context freeze, six-turn cap, evidence and expiry rules |
-| Persistence integration | Flyway, constraints, cascades, optimistic locking, expired-query filtering |
-| Application component | orchestration with fake gateways, two-transaction recovery, idempotent resume |
-| API integration | bearer ownership, ProblemDetail errors, validation, OpenAPI |
-| Frontend unit | interview reducer and browser-capability fallbacks |
-| E2E | fake-provider setup → text turns → end → report → delete |
-| Manual evaluation | Chrome STT vocabulary/accent behaviour and Gemini grounding/JSON reliability |
+| MockMvc | stable public response; unknown/inactive correlated 404; invalid manifest fail-closed; no auth/idempotency requirement |
+| Vitest | reset/start/ended success; forward-seek and invalidation events; stale generation; cue and media adapter logic |
+| React Testing Library | guided/transfer/reflection states; accessibility-tree concealment; keyboard/text fallback; truthful errors; sink guards |
+| Playwright Chromium | Spring metadata plus browser-direct media; explicit start; playback/transfer/reflection; retry/reset; app-controlled privacy sinks |
+| Content validator | manifest/WebVTT one-to-one validation, hashes, rights metadata, deliberate invalid fixtures |
+| Smoke | deterministic fixture MIME/range behavior and zero-key clean-clone path |
+| Manual owner evidence | real Chrome timing/rates, keyboard/screen-reader use, media quality, and pilot go/no-go |
 
-Normal CI uses fake gateways and synthetic data. Manual real-provider fixtures must not contain a real CV or confidential interview transcript.
+Vitest/RTL/Playwright are approved planning dependencies for later M2 Issues;
+Issue #17 adds none of them.
 
-## 14. Deployment direction
+## 11. Rights and integrity boundary
 
-Required: local PostgreSQL plus independently runnable backend and frontend; Compose provides the reproducible integration path.
+Real human media is rejected unless private releases cover every audible or
+visible participant and the public contract includes approved publication
+scope, media-specific notice, non-personal release-record reference, and
+matching hashes for the exact media, manifest, VTT, and script/version. Private
+releases and identities stay outside Git. A checksum proves integrity, not
+rights. The deterministic non-person fixture remains the automated fallback.
 
-Optional: a free public demo using only synthetic/anonymised data. Current free-tier quotas, model availability, hosting sleep behaviour, and data terms must be checked at implementation/deployment time.
+## 12. Future adaptive interview architecture (M3+)
 
-## 15. ADR index
+The following approved v0.2 contracts remain available for a separately
+approved M3 or conditional later slice. They are not part of M2 and are not
+reported as current runtime capability.
+
+### 12.1 Aggregate and persistence
+
+`InterviewSession` remains the aggregate root and owns one
+`CandidateContext`, zero to six `InterviewTurn` values, and at most one
+`InterviewReport`. Candidate context becomes immutable at `READY`. JPA,
+PostgreSQL, Flyway, optimistic versioning, sequence uniqueness, and cascade
+deletion apply only when this persisted interview boundary is activated.
+
+### 12.2 State, token, and expiry
+
+Session states remain `DRAFT`, `READY`, `ACTIVE`, `ENDED`, `ABANDONED`, and
+effective `EXPIRED`; there is no session `FAILED`. Anonymous access tokens are
+high entropy, session-scoped, returned once, stored only as hashes, omitted
+from URLs/logs, and expire with the session. `InterviewSession.expiresAt` is
+fixed at creation and every read/write rejects expiry immediately. Scheduled
+physical purge remains best effort while the service is offline.
+
+### 12.3 Provider and transaction boundary
+
+`InterviewResponseGateway` and `ReportGenerationGateway` remain the
+domain-oriented provider ports. Fake providers are deterministic/default and
+Gemini is explicit opt-in. The backend commits an answer or report intent
+before invoking a provider, invokes providers outside database transactions,
+and uses a second short transaction for success/failure. Provider failure
+preserves the answer and supports operation-specific idempotent retry.
+
+### 12.4 Turns, idempotency, and reports
+
+A session owns at most six turns and a follow-up consumes one turn. Creation,
+start, turn submission, retry, and report generation use operation-specific
+idempotency keys and request fingerprints. Report states remain
+`NOT_STARTED`, `PENDING`, `COMPLETE`, and `FAILED`. Reports contain strengths,
+one to three priorities, evidence turn IDs, and improved outlines, with no
+numeric score or complete sample answer.
+
+### 12.5 Future interview verification
+
+When activated, this boundary requires aggregate/state unit tests,
+Flyway/Testcontainers persistence tests, transaction/idempotency component
+tests, bearer/expiry/ProblemDetail API tests, deterministic fake-provider
+flows, and small manual Gemini/browser-speech evaluation. Text fallback and no
+raw-audio persistence remain mandatory.
+
+## 13. ADR index
 
 - `ADR-0001`: modular monolith and monorepo;
-- `ADR-0002`: browser speech plus text-provider topology;
-- `ADR-0003`: session aggregate and 24-hour retention;
-- `ADR-0004`: external provider calls outside database transactions.
+- `ADR-0002`: browser speech plus text-provider topology (future M3+);
+- `ADR-0003`: session aggregate and 24-hour retention (future M3+);
+- `ADR-0004`: external provider calls outside transactions (future M3+);
+- `ADR-0005`: shadowing content and media boundary (M2).

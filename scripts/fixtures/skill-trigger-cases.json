@@ -8,7 +8,7 @@
   {
     "skill": "global-ready-ticket-manager",
     "case": "implicit",
-    "prompt": "Decompose the next Global-Ready milestone into technical GitHub issues with acceptance criteria and issue-specific DoD.",
+    "prompt": "Find the canonical v0.3 next unfinished milestone and decompose it into technical GitHub issues with acceptance criteria and issue-specific DoD.",
     "expected": "trigger-read-only"
   },
   {
@@ -32,7 +32,7 @@
   {
     "skill": "global-ready-issue-delivery",
     "case": "implicit",
-    "prompt": "Implement Global-Ready issue #42, preserve its one-issue branch scope, and provide verification evidence.",
+    "prompt": "Implement Global-Ready issue #42 with RED/GREEN evidence, preserve its one-issue branch scope, and provide status-ledger readback.",
     "expected": "trigger-delivery"
   },
   {

@@ -23,6 +23,15 @@ function requireFile(file) {
   }
 }
 
+function requireMarkers(file, markers) {
+  const absolute = path.join(root, file);
+  if (!fs.existsSync(absolute)) return;
+  const content = fs.readFileSync(absolute, "utf8");
+  for (const marker of markers) {
+    if (!content.includes(marker)) errors.push(`${file} is missing canonical marker: ${marker}`);
+  }
+}
+
 function walk(directory, predicate, files = []) {
   if (!fs.existsSync(directory)) return files;
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
@@ -38,6 +47,7 @@ function walk(directory, predicate, files = []) {
 
 const requiredFiles = [
   "AGENTS.md",
+  "CLAUDE_MILESTONE_PROMPT.md",
   "backend/AGENTS.md",
   "backend/PROJECT_STATUS.md",
   "frontend/AGENTS.md",
@@ -52,11 +62,19 @@ const requiredFiles = [
   "docs/03_SRS.md",
   "docs/04_ARCHITECTURE.md",
   "docs/05_DATA_AND_API.md",
+  "docs/06_OPEN_QUESTIONS.md",
+  "docs/07_MILESTONE_RULES.md",
   "docs/08_MILESTONE_PLAN.md",
   "docs/09_TRACEABILITY.md",
   "docs/10_CHANGELOG_AND_READINESS.md",
+  "docs/11_M1_IMPLEMENTATION_HANDOFF.md",
   "docs/12_CODEX_WORKFLOW.md",
+  "docs/13_SHADOWING_FIRST_IMPLEMENTATION_PLAN.md",
   "docs/adr/0001-modular-monolith-monorepo.md",
+  "docs/adr/0002-browser-speech-text-provider.md",
+  "docs/adr/0003-session-aggregate-retention.md",
+  "docs/adr/0004-provider-transaction-boundary.md",
+  "docs/adr/0005-shadowing-content-and-media-boundary.md",
   ".codex/hooks.json",
   ".github/ISSUE_TEMPLATE/config.yml",
   ".github/ISSUE_TEMPLATE/feature.yml",
@@ -66,8 +84,110 @@ const requiredFiles = [
   ".github/dependabot.yml",
   ".github/workflows/ci.yml",
   "scripts/fixtures/skill-trigger-cases.json",
+  "MEDIA_NOTICE.md",
 ];
 requiredFiles.forEach(requireFile);
+
+requireMarkers("docs/01_PRODUCT_BRIEF.md", [
+  "Status: Canonical v0.3",
+  "guided imitation -> optional repetition -> independent transfer -> reflection",
+  "M2 pilot MVP",
+  "M3 portfolio/CV MVP",
+]);
+requireMarkers("README.md", [
+  "## Run the application",
+  "docker compose --profile app up --build -d",
+  "./scripts/verify.sh full",
+  "## Develop locally",
+  "## Troubleshooting",
+]);
+requireMarkers("docs/02_ASSUMPTIONS_AND_DECISIONS.md", [
+  "Status: Canonical v0.3",
+  "D-032",
+  "D-041",
+  "optional repetition",
+]);
+requireMarkers("docs/adr/0005-shadowing-content-and-media-boundary.md", [
+  "# ADR-0005:",
+  "Status: Accepted",
+  "backend never uploads, stores, proxies, or streams media bytes",
+]);
+requireMarkers("docs/03_SRS.md", [
+  "Status: Canonical v0.3",
+  "FR-100 MUST",
+  "FR-109 MUST",
+  "BR-100",
+  "BR-103",
+  "NFR-050 MUST",
+  "NFR-054 MUST",
+  "AS-09",
+  "AS-14",
+]);
+requireMarkers("docs/04_ARCHITECTURE.md", [
+  "com.globalready.shadowing",
+  "browser-direct media",
+  "ADR-0005",
+]);
+requireMarkers("docs/05_DATA_AND_API.md", [
+  "`GET /shadowing-exercises/{exerciseId}`",
+  "M2 adds no table or migration",
+  "never proxies media bytes",
+]);
+requireMarkers("docs/09_TRACEABILITY.md", [
+  "FR-100–FR-109",
+  "BR-100–BR-103",
+  "NFR-050–NFR-054",
+  "AS-09–AS-14",
+]);
+requireMarkers("docs/07_MILESTONE_RULES.md", [
+  "Status: Canonical v0.3",
+  "RED -> GREEN -> REFACTOR",
+  "media-rights gate",
+  "manual merge",
+]);
+requireMarkers("docs/08_MILESTONE_PLAN.md", [
+  "## M0.3 — Shadowing canonical closure",
+  "## M2 — Shadowing pilot MVP",
+  "## M3 — Spring portfolio/CV MVP",
+  "M2 go/no-go",
+]);
+requireMarkers("docs/10_CHANGELOG_AND_READINESS.md", [
+  "v0.2 -> v0.3",
+  "CANONICAL v0.3 READY; M2 BACKLOG NOT YET APPROVED",
+]);
+requireMarkers("docs/11_M1_IMPLEMENTATION_HANDOFF.md", [
+  "2026-08-27 addendum",
+  "M2 — Shadowing pilot MVP",
+]);
+requireMarkers("MEDIA_NOTICE.md", [
+  "Source-code license does not grant media rights",
+  "Private release records stay outside Git",
+  "PUBLIC_REPOSITORY_AND_DEMO",
+  "SHA-256",
+  "No approved human media assets are present",
+]);
+requireMarkers("AGENTS.md", [
+  "## M2 shadowing invariants",
+  "## Future adaptive interview invariants",
+  "Auto-merge must never be enabled",
+]);
+requireMarkers("backend/AGENTS.md", [
+  "metadata/content contract",
+  "must not transport media bytes",
+]);
+requireMarkers("frontend/AGENTS.md", [
+  "UI-only concealment",
+  "must not claim speech verification",
+]);
+requireMarkers("docs/12_CODEX_WORKFLOW.md", [
+  "Media-rights gate",
+  "M2 shadowing Issue",
+  "Auto-merge must never be enabled",
+]);
+requireMarkers("CLAUDE_MILESTONE_PROMPT.md", [
+  "HISTORICAL NON-CANONICAL PROMPT",
+  "Do not use this file to select current work",
+]);
 
 function gitOutput(args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
@@ -217,6 +337,7 @@ if (fs.existsSync(apiPath)) {
   const api = fs.readFileSync(apiPath, "utf8");
   const requiredContractMarkers = [
     "base path: `/api/v1`",
+    "`GET /shadowing-exercises/{exerciseId}`",
     "`POST /access-grants`",
     "`POST /interview-sessions`",
     "`PUT /interview-sessions/{sessionId}/turns/{turnId}/answer`",
@@ -315,6 +436,9 @@ const requiredIssueFormMarkers = [
   "id: ai_mode",
   "id: non_goals",
   "id: risks",
+  "id: architecture_decision",
+  "id: tdd_evidence",
+  "id: media_rights",
 ];
 for (const form of issueForms) {
   const formPath = path.join(root, ".github/ISSUE_TEMPLATE", form);
@@ -350,9 +474,23 @@ if (fs.existsSync(pullRequestTemplatePath)) {
     "Human review gate",
     "Risks and recovery",
     "Unverified items",
+    "Media rights and content provenance",
+    "RED — test/check command and intended failure reason",
+    "Auto-merge is disabled",
   ];
   for (const marker of requiredPrMarkers) {
     if (!content.includes(marker)) errors.push(`PR template is missing required marker: ${marker}`);
+  }
+}
+
+for (const skill of expectedSkills) {
+  const skillPath = path.join(skillsRoot, skill, "SKILL.md");
+  if (!fs.existsSync(skillPath)) continue;
+  const content = fs.readFileSync(skillPath, "utf8");
+  for (const marker of ["RED -> GREEN -> REFACTOR", "PROJECT_STATUS.md", "media-rights", "Auto-merge"]) {
+    if (!content.includes(marker)) {
+      errors.push(`${relative(skillPath)} is missing delivery-contract marker: ${marker}`);
+    }
   }
 }
 
@@ -389,6 +527,9 @@ if (fs.existsSync(workflowPath)) {
     "OPENAI_API_KEY",
     "CODEX_API_KEY",
     "secrets.",
+    "auto-merge",
+    "automerge",
+    "gh pr merge --auto",
   ];
   for (const marker of forbiddenWorkflowMarkers) {
     if (workflow.includes(marker)) errors.push(`CI workflow contains forbidden zero-cost/security marker: ${marker}`);

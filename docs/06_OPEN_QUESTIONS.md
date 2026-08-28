@@ -1,85 +1,79 @@
 # Open Questions
 
-Status: v0.2 — no implementation blockers  
-Last updated: 2026-08-24
+Status: Canonical v0.3 — no M0.3 or M2 fixture blocker
+Last updated: 2026-08-27
 
-All product and architecture choices needed for M1 and M2 are resolved in `02_ASSUMPTIONS_AND_DECISIONS.md`.
+D-032 through D-041 and ADR-0005 resolve the decisions required to canonicalise
+M0.3 and implement the deterministic M2 fixture. The questions below are
+measured future decisions. None authorises silent scope, dependency, storage,
+rights, privacy, or provider expansion.
 
-The items below are implementation-time checks or optional later decisions. They must not expand MVP scope silently.
+## Q-401 — Learning generalisability
 
-## 1. Checks at scaffold time
+Does one architecture-trade-off exercise produce enough activation and
+four-part-transfer evidence to justify more scenarios?
 
-### Q-101 — Exact supported versions
+- Evidence: owner pilot notes for activation difficulty, confidence,
+  four-part structure, control confusion, and active-versus-passive feel.
+- Fallback: keep one deterministic exercise, revise or remove the shadowing
+  route, and make no claim about learning speed, retention, pronunciation, or
+  population-level effectiveness.
+- Gate: scenario expansion waits for the M2 owner go/no-go.
 
-Confirm from official compatibility documentation:
+## Q-402 — Future R2/GCS selection
 
-- Spring Boot line that supports Java 25;
-- stable Next.js and supported Node.js versions;
-- PostgreSQL image major version;
-- Testcontainers and OpenAPI library versions.
+If a public human-media origin becomes useful, which current zero-cost storage
+and delivery option meets public-origin, byte-range, CORS, cost, operational,
+and rights-removal needs?
 
-Pin exact versions. Do not silently downgrade Java 25.
+- Evidence: current official provider terms and a separate owner-approved ADR.
+- Fallback: retain repository-local deterministic browser-direct media.
+- Gate: M2 selects no R2, GCS, Drive, CDN, cloud SDK, hosted-media dependency,
+  or cloud-storage key. This question does not block clean clone or CI.
 
-### Q-102 — Local container experience
+## Q-403 — Real human content production
 
-Verify whether the owner's Colima/Docker environment can build both applications within reasonable memory. If not, keep PostgreSQL in Compose and run frontend/backend directly during development. This changes developer convenience, not architecture.
+Can the project produce useful human dialogue with releases and provenance
+that cover every participant and exact public artifact version?
 
-## 2. Checks before M3 real voice/provider work
+- Evidence: private releases, explicit public/redistribution rights,
+  media-specific notice, non-personal release-record reference, and matching
+  media/manifest/VTT/script hashes.
+- Fallback: automated development and verification use the deterministic
+  non-person fixture; incomplete or mismatched human content fails closed.
+- Gate: no real human asset is committed or published until the owner approves
+  the complete rights/integrity evidence.
 
-### Q-201 — Chrome speech recognition quality
+## Q-404 — M3 persisted product boundary
 
-Run a documented manual corpus containing Vietnamese-accented English and Java/Spring vocabulary. Record:
+Which product-justified vertical slice should activate Spring persistence,
+transactions, idempotency, PostgreSQL/Testcontainers, security/privacy, and
+recovery after the M2 pilot?
 
-- support/permission behaviour;
-- final transcript quality;
-- technical-term failure examples;
-- whether manual text fallback is usable.
+- Candidates: the retained adaptive workplace/interview contract or another
+  separately approved persisted capability.
+- Fallback: retain the M1 scaffold and M2 non-persisted pilot while deferring
+  persistence; do not invent progress tables merely to demonstrate JPA.
+- Gate: aggregate, state, transaction, idempotency, token, expiry, security,
+  and migration design remains HUMAN-FIRST.
 
-Failure does not block the MVP because text fallback is mandatory.
+## Q-405 — Post-shadow STT
 
-### Q-202 — Gemini configuration
+After the M2 go/no-go and M3 portfolio gate, does measured learner value
+justify browser STT for an adaptive or post-shadow flow?
 
-At M3, check current official Gemini documentation for:
+- Evidence: a small manual Chrome corpus with Vietnamese-accented English and
+  Java/Spring vocabulary, permission behavior, privacy disclosure, and current
+  browser/vendor processing terms.
+- Fallback: non-empty transient text and explicit speaking self-attestation
+  remain usable; text fallback is mandatory.
+- Gate: M2 performs no microphone capture, STT, speech verification, raw-audio
+  handling, or AI call.
 
-- available free-tier text model;
-- structured-output support;
-- request/rate limits;
-- data-use and retention terms;
-- Java integration option;
-- timeout and retry guidance.
+## Deferred expansion
 
-The fake adapter remains the required default. Do not hard-code a model name from an older document.
-
-### Q-203 — Structured report reliability
-
-Use a small synthetic manual evaluation corpus in M5. Decide whether strict schema prompting plus validation is sufficient. A repair call may be added only if measured failures justify its extra quota and complexity.
-
-## 3. Checks only before optional public deployment
-
-### Q-301 — Hosting and sleeping cleanup
-
-Select hosting only after checking current free allowances. A platform that sleeps is acceptable if documentation preserves the distinction between immediate logical expiry and best-effort physical purge.
-
-### Q-302 — Rate limiting
-
-If a public Gemini-backed demo is enabled, choose the smallest in-process limiter that protects anonymous grant creation and provider operations. Do not add Redis for the MVP.
-
-### Q-303 — Demo data policy
-
-Use synthetic/anonymised CV, JD, transcript, and report data unless current provider and hosting policies have been reviewed for real personal data.
-
-## 4. Explicitly deferred product questions
-
-These do not block implementation:
-
-- more interview modes;
-- difficulty/duration controls;
-- PDF upload;
-- account/history;
-- transcript correction;
-- weakest-question retry;
-- mobile/browser expansion;
-- public sharing;
-- numeric scoring;
-- paid hosting or paid AI.
-
+Accounts/history, scenario packs, adaptive interviews, reports, CV/JD input,
+public hosting, provider-backed AI, numeric/pronunciation scoring, mobile
+support, and persistent learner progress are conditional later work. They do
+not block M0.3 or the M2 deterministic fixture and require separately approved
+requirements and delivery Issues.

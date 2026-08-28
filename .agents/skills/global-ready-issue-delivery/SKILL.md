@@ -34,6 +34,12 @@ Before editing:
    explicit authorization.
 5. Compare issue claims with implementation evidence. Report contradictions
    instead of silently choosing a side.
+6. Confirm the approved canonical boundary or ADR. For an M2 shadowing Issue,
+   stop if the proposed change adds learner persistence, backend/database media
+   bytes, or a rights/privacy/public-contract decision without owner approval.
+7. Establish RED -> GREEN -> REFACTOR evidence before production behavior.
+   Documentation/configuration-only work uses the smallest executable validator
+   that can fail for the intended missing contract.
 
 ## HUMAN-FIRST stop
 
@@ -55,6 +61,10 @@ specified by the issue even when the implementation seems obvious.
   privacy, idempotency, concurrency, and recovery paths.
 - Update API/data/ADR/RTM docs only when the externally visible contract or
   mapped evidence changes.
+- Verify media-rights/provenance evidence for changed content assets; never put
+  private release records or participant identities in Git.
+- Update every affected `PROJECT_STATUS.md` ledger in each commit with the
+  capability/limitation, verification evidence, and Issue/decision reference.
 - For review-only requests, do not edit. Report findings by severity with
   exact file/line evidence and missing verification.
 
@@ -73,3 +83,6 @@ Before declaring PR readiness:
    documentation updates, and anything not verified.
 4. Prepare a scoped PR summary with `Closes #N` when appropriate, but do not
    perform external writes without explicit authorization.
+
+Auto-merge must never be enabled. Human review and an explicit human merge are
+required even when every automated check passes.

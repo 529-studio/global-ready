@@ -14,6 +14,13 @@ can deliver the milestone. Do not add speculative fields or future-milestone
 work. Every proposed mutation must trace to verified evidence and a stated
 success/read-back criterion.
 
+Canonical v0.3 documents and current source are jointly authoritative. Treat
+interview-first Issues #2–#11 as stale until an approved board migration says
+otherwise. For shadowing M2, plan Spring metadata/content-contract work and
+browser-direct media only: no learner persistence or backend/database media
+bytes. Include media-rights and content-integrity evidence whenever an Issue
+touches assets or content publication.
+
 ## Boundaries
 
 Use this skill for backlog discovery, milestone decomposition, issue design,
@@ -62,6 +69,10 @@ Every proposed issue body must contain these evidence-specific sections:
 - Risks and recovery
 - Delivery metadata
 
+The Definition of Done must name issue-specific RED -> GREEN -> REFACTOR
+evidence and the affected `PROJECT_STATUS.md` ledger readback. Do not approve
+an Issue that omits the media-rights gate where media/content changes apply.
+
 Do not invent paths or symbols. Mark a new symbol's exact name as an
 implementation choice while naming its verified target module and
 responsibility. Define product acceptance as observable behavior; define Done
@@ -83,3 +94,5 @@ Only after the exact approval phrase:
 
 Never modify source, create a branch, push, open a pull request, auto-merge, or
 print credentials as part of this skill.
+
+Auto-merge must never be enabled; a human performs the final merge explicitly.
