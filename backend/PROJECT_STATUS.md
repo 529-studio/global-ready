@@ -44,6 +44,7 @@ provider payloads, or environment-file values here.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-28 | Clarified that M0.3 completes at manual canonical merge plus post-merge readback, while ticket-manager Phase A and exact board approval remain a separate prerequisite for M2 product coding; backend runtime remains M1, with no M2 backlog or product endpoint implemented. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 3 fix round 1 |
 | 2026-08-27 | Recorded the approved M0.3 canonical closure, M2 shadowing pilot MVP, and product-justified M3 portfolio/CV ordering; backend runtime remains M1, no M2 backlog is approved, and no M2 product endpoint exists. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / M0.3–M3 owner-approved cut lines |
 | 2026-08-27 | Corrected the canonical system-context diagram so Spring receives only public exercise metadata while browser media/caption requests terminate at the deterministic or separately approved media origin; backend runtime remains M1 and no endpoint exists yet. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / ADR-0005 / Task 2 fix round 1 |
 | 2026-08-27 | Defined canonical v0.3 SRS, architecture, public exercise API, and RTM for Spring metadata with browser-direct media; backend runtime remains M1 and the planned M2 GET is not implemented. | `./scripts/verify.sh docs` | Issue #17 / D-032–D-041 / ADR-0005 |

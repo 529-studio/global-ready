@@ -26,10 +26,15 @@ ADR-0005, milestones, RTM, readiness, handoff, status ledgers, and executable
 documentation checks. M0.3 contains no product source, dependency, media,
 cloud, CI, hook, or board mutation.
 
-**Definition of done:** the canonical PR is manually merged; the status ledgers
-and documentation checks agree; the ticket manager has then prepared and
-received approval for a separate M2 backlog. Until both gates occur, product
-coding does not start.
+**Definition of done:** the canonical documentation/workflow PR is manually
+merged, and post-merge readback confirms the canonical documents, status
+ledgers, and CI result agree.
+
+**Next prerequisite for M2 product coding:** after M0.3 is complete, the ticket
+manager must run Phase A and receive the exact `APPROVE BOARD WRITE` approval
+for a separate implementation-ready M2 backlog. That backlog gate is not part
+of M0.3 completion. Product coding does not start until both gates have
+occurred.
 
 ## M2 — Shadowing pilot MVP
 
