@@ -94,6 +94,13 @@ requireMarkers("docs/01_PRODUCT_BRIEF.md", [
   "M2 pilot MVP",
   "M3 portfolio/CV MVP",
 ]);
+requireMarkers("README.md", [
+  "## Run the application",
+  "docker compose --profile app up --build -d",
+  "./scripts/verify.sh full",
+  "## Develop locally",
+  "## Troubleshooting",
+]);
 requireMarkers("docs/02_ASSUMPTIONS_AND_DECISIONS.md", [
   "Status: Canonical v0.3",
   "D-032",
