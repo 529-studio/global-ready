@@ -22,7 +22,9 @@ Allowed publication scope is `PUBLIC_REPOSITORY_AND_DEMO`. `Status` is either
 
 | Asset ID | Version | Media license | Release-record ID | Publication scope | MP4 SHA-256 | Manifest SHA-256 | WebVTT SHA-256 | Script SHA-256 | Status |
 |---|---|---|---|---|---|---|---|---|---|
-| No approved human media assets are present | — | — | — | — | — | — | — | — | — |
+
+The registry currently has zero asset rows. No approved human media assets are
+present.
 
 ## Boundary
 
