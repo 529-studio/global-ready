@@ -1,4 +1,4 @@
-FROM eclipse-temurin:25.0.4_7-jdk-alpine-3.24 AS build
+FROM eclipse-temurin:26-jdk-alpine-3.24 AS build
 
 RUN apk add --no-cache curl
 
@@ -10,7 +10,7 @@ RUN chmod +x gradlew && ./gradlew --no-daemon dependencies
 COPY src src
 RUN ./gradlew --no-daemon bootJar
 
-FROM eclipse-temurin:25.0.4_7-jre-alpine-3.24
+FROM eclipse-temurin:26-jre-alpine-3.24
 
 RUN addgroup -S app && adduser -S app -G app
 
