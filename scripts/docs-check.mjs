@@ -83,6 +83,7 @@ const requiredFiles = [
   ".github/dependabot.yml",
   ".github/workflows/ci.yml",
   "scripts/fixtures/skill-trigger-cases.json",
+  "MEDIA_NOTICE.md",
 ];
 requiredFiles.forEach(requireFile);
 
@@ -149,6 +150,13 @@ requireMarkers("docs/10_CHANGELOG_AND_READINESS.md", [
 requireMarkers("docs/11_M1_IMPLEMENTATION_HANDOFF.md", [
   "2026-08-27 addendum",
   "M2 — Shadowing pilot MVP",
+]);
+requireMarkers("MEDIA_NOTICE.md", [
+  "Source-code license does not grant media rights",
+  "Private release records stay outside Git",
+  "PUBLIC_REPOSITORY_AND_DEMO",
+  "SHA-256",
+  "No approved human media assets are present",
 ]);
 
 function gitOutput(args) {

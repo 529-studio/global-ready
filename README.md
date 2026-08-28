@@ -16,6 +16,13 @@ Global-Ready is a portfolio project for practising English software-engineering
 interviews while rebuilding modern Java/Spring skills. It is designed to stay
 locally runnable, privacy-conscious, and demonstrable without paid services.
 
+## Media boundary
+
+See the [media-rights and provenance contract](MEDIA_NOTICE.md) before adding
+any reference asset. Source-code license does not grant media rights. The
+browser obtains approved media directly; database/backend transport never
+carries media bytes.
+
 > **Current checkpoint:** M1 provides the production-shaped infrastructure.
 > Interview behaviour starts in M2; it is intentionally not represented by
 > empty domain entities or placeholder APIs in this release.

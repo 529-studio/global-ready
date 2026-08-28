@@ -43,6 +43,7 @@ values.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-08-28 | Defined the fail-closed media publication and non-personal provenance gate; no real human media, cloud storage, or product code was added, and frontend runtime remains the M1 shell. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / D-034, D-035, D-039 / ADR-0005 |
 | 2026-08-28 | Clarified that M0.3 completes at manual canonical merge plus post-merge readback, while ticket-manager Phase A and exact board approval remain a separate prerequisite for M2 product coding; frontend runtime remains the M1 shell, with no M2 backlog or `/practice` implementation. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / Task 3 fix round 1 |
 | 2026-08-27 | Recorded the approved M0.3 canonical closure, M2 shadowing pilot MVP, and product-justified M3 portfolio/CV ordering; frontend runtime remains the M1 shell, no M2 backlog is approved, and `/practice` does not exist. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / M0.3–M3 owner-approved cut lines |
 | 2026-08-27 | Corrected the canonical system-context diagram so the browser sends only exercise metadata requests to Spring and sends media/caption requests directly to the deterministic or separately approved media origin; frontend runtime remains the M1 shell and `/practice` is not implemented. | `./scripts/verify.sh docs`; `git diff --check` | Issue #17 / ADR-0005 / Task 2 fix round 1 |
