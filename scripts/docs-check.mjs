@@ -214,7 +214,7 @@ function commitContainsStatusLedgers(commit) {
   }
 }
 
-function isDependabotCommit(commit) {
+function isDependabotIdentity(commit) {
   const identity = gitOutput(["show", "-s", "--format=%an%n%ae", commit]);
   return identity
     .split(/\r?\n/u)
@@ -224,6 +224,18 @@ function isDependabotCommit(commit) {
         line === "dependabot[bot]@users.noreply.github.com" ||
         line.endsWith("+dependabot[bot]@users.noreply.github.com"),
     );
+}
+
+function isDependabotCommit(commit) {
+  if (isDependabotIdentity(commit)) return true;
+  // GitHub attributes a merge commit to whoever pressed the button, not to the
+  // pull request author, so a merge of a dependabot branch would otherwise read
+  // as a human commit that skips the ledger. Treat the merge as dependabot when
+  // every commit it introduces was authored by dependabot.
+  const parents = gitLines(["rev-list", "--parents", "-n", "1", commit])[0]?.split(/\s+/u).slice(1) ?? [];
+  if (parents.length < 2) return false;
+  const introduced = gitLines(["rev-list", "--no-merges", `${parents[0]}..${commit}`]);
+  return introduced.length > 0 && introduced.every(isDependabotIdentity);
 }
 
 function filesChangedByCommit(commit) {

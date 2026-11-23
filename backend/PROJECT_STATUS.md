@@ -1,11 +1,11 @@
 # Backend Project Status
 
 Status: M1 runtime complete; canonical M2 Spring shadowing content-contract boundary ready for backlog planning
-Last updated: 2026-08-28
+Last updated: 2026-11-23
 
 ## Current capability
 
-- Java 25 and Spring Boot 4.1.1 modular-monolith scaffold.
+- Java 25 and Spring Boot 4.2.0 modular-monolith scaffold.
 - Spring MVC, validation, JPA, Flyway and PostgreSQL/Testcontainers wiring.
 - Actuator health and OpenAPI endpoints.
 - Application health contributor reports `UP` in `zero-cost-local` mode.
@@ -46,6 +46,7 @@ provider payloads, or environment-file values here.
 
 | Date | Change | Verification | Reference |
 |---|---|---|---|
+| 2026-11-23 | Recorded the dependency line the merged Dependabot bumps actually left in place: Spring Boot 4.2.0, Springdoc 3.2.0 and Gradle wrapper 9.9.2; base image stays `eclipse-temurin:25`. No Java source change. | `./scripts/verify.sh docs`; `./scripts/verify.sh backend` on the merge result | PR #20 / PR #22 / PR #24 |
 | 2026-11-23 | Exempted `dependabot[bot]` commits from the `PROJECT_STATUS.md` ledger requirement in `scripts/docs-check.mjs` so automated dependency PRs are not blocked on manual status-ledger edits; backend runtime remains unchanged. | `node scripts/docs-check.mjs` (`VERIFY_BASE_REF=origin/dev`); `node --test .codex/hooks/tests/hooks.test.mjs`; `./scripts/verify.sh docs` | Dependabot CI unblocking (`#14`, `#20`, `#22`) |
 | 2026-08-28 | Rewrote the publish-ready README with verified application startup, local backend/frontend development, shared verification, configuration, and troubleshooting paths; backend runtime remains unchanged. | RED: `./scripts/verify.sh docs` reported the four intended missing README markers. GREEN: `./scripts/verify.sh docs` exits 0; `git diff --check` exits 0. | PR #18 / README clarity update |
 | 2026-08-28 | Reconciled the M0.3 design record as adopted audit input and set the honest runtime gate: M1 backend is complete, M2 Spring metadata is ready only for backlog planning, and no M2 endpoint, persistence, or media transport exists. | `./scripts/verify.sh fast`; `./scripts/verify.sh full`; `./scripts/verify.sh docs`; `./scripts/verify.sh smoke`; `git diff --check` | Issue #17 / Task 7 |
