@@ -214,6 +214,18 @@ function commitContainsStatusLedgers(commit) {
   }
 }
 
+function isDependabotCommit(commit) {
+  const identity = gitOutput(["show", "-s", "--format=%an%n%ae", commit]);
+  return identity
+    .split(/\r?\n/u)
+    .some(
+      (line) =>
+        line === "dependabot[bot]" ||
+        line === "dependabot[bot]@users.noreply.github.com" ||
+        line.endsWith("+dependabot[bot]@users.noreply.github.com"),
+    );
+}
+
 function filesChangedByCommit(commit) {
   const revision = gitLines(["rev-list", "--parents", "-n", "1", commit]);
   const parts = revision[0]?.split(/\s+/u) ?? [];
@@ -260,6 +272,7 @@ if (verificationBase && !/^0+$/u.test(verificationBase)) {
     const commits = gitLines(["rev-list", "--reverse", `${verificationBase}..HEAD`]);
     for (const commit of commits) {
       if (!commitContainsStatusLedgers(commit)) continue;
+      if (isDependabotCommit(commit)) continue;
       validateProjectStatusUpdate(filesChangedByCommit(commit), `Commit ${commit.slice(0, 12)}`);
     }
   } catch (error) {
